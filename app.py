@@ -499,3 +499,4 @@ def admin_nosotros():
         flash('Información actualizada', 'success')
         return redirect(url_for('mas_sobre'))
     return render_template('admin/admin_nosotros.html')
+
