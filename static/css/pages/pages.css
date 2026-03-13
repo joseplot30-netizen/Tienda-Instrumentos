@@ -200,9 +200,15 @@ main {
 }
 
 .formulario .form-footer {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     opacity: 0.9;
     margin: 0;
+}
+
+@media (max-width: 520px) {
+    .formulario .form-footer {
+        font-size: 0.68rem;
+    }
 }
 
 .formulario .form-footer a {
@@ -330,3 +336,4 @@ main {
         font-size: 0.9rem;
     }
 }
+
