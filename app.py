@@ -1,16 +1,24 @@
+Python
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from functools import wraps
 import mysql.connector
+import os
 
 app = Flask(__name__)
-app.secret_key = "key_gen"
+app.secret_key = "TiendaMusical" # Cambia 'key_gen' por algo largo
 
-db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '',
-    'database': 'bd_users'
-}
+def get_db_connection():
+
+    return mysql.connector.connect(
+        host=os.getenv('DB_HOST'),      
+        port=os.getenv('DB_PORT'),      
+        user=os.getenv('DB_USER'),     
+        password=os.getenv('DB_PASSWORD'), 
+        database=os.getenv('DB_NAME'),  
+        ssl_ca='/etc/secrets/ca.pem',
+        ssl_cert='/etc/secrets/service.cert',
+        ssl_key='/etc/secrets/service.key'
+    )
 
 def get_db_connection():
     return mysql.connector.connect(**db_config)
