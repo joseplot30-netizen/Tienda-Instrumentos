@@ -102,4 +102,3 @@ created_at (TIMESTAMP)
 - Los endpoints de administración usan `@admin_required` (admin + sesión activa).
 - Algunos endpoints de API devuelven JSON (p. ej., `/api/productos/<categoria>`).
 - La arquitectura prioriza la simplicidad y claridad para facilitar mantenimiento.
-
