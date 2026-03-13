@@ -9,11 +9,22 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Music Store">
-    <meta name="description" content="Music Store - Tienda de instrumentos musicales, venta online, guitarras, bajos, baterías, accesorios y más. Envío rápido y soporte al cliente.">
-    <meta name="keywords" content="instrumentos musicales, tienda de música, guitarras eléctricas, bajos, baterías, percusión, accesorios musicales, partituras, amplificadores, teclados, violines, compra instrumentos, venta instrumentos, música rock, jazz, clásico, sonido profesional, envío rápido, precios bajos, ofertas música, instrumentos para principiantes, lecciones de música, instrumentos infantiles, equipo de audio">
+    <meta name="description"
+        content="Music Store - Tienda de instrumentos musicales, venta online, guitarras, bajos, baterías, accesorios y más. Envío rápido y soporte al cliente.">
+    <meta name="keywords"
+        content="instrumentos musicales, tienda de música, guitarras eléctricas, bajos, baterías, percusión, accesorios musicales, partituras, amplificadores, teclados, violines, compra instrumentos, venta instrumentos, música rock, jazz, clásico, sonido profesional, envío rápido, precios bajos, ofertas música, instrumentos para principiantes, lecciones de música, instrumentos infantiles, equipo de audio">
     <meta name="robots" content="index, follow">
 
-
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MZVPF2LT');</script>
+    <!-- End Google Tag Manager -->
 
     <title>{% block title %}Music Store{% endblock %}</title>
 
@@ -25,19 +36,22 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/pages.css') }}?v=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base/mobile.css') }}?v=1">
     <script async src="https://www.googletagmanager.com/gtag/js?id=GTM-MZVPF2LT"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-  gtag('config', 'GTM-MZVPF2LT');
-</script>
+        gtag('config', 'GTM-MZVPF2LT');
+    </script>
     {% block head %}{% endblock %}
 </head>
 
 <body {% block body_attrs %}{% endblock %} class="{% block body_class %}{% endblock %}">
-
-{% block nav %}
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZVPF2LT" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    {% block nav %}
     <nav class="site-nav" role="navigation" aria-label="Menú principal">
         <div class="site-nav__container">
             <button class="site-nav__hamburger" aria-label="Abrir menú">☰</button>
@@ -47,32 +61,32 @@
                     <li class="site-nav__item"><a href="{{ url_for('instrumentos') }}">Instrumentos</a></li>
                     <li class="site-nav__item"><a href="{{ url_for('contacto') }}">Contacto</a></li>
                     <li class="site-nav__item"><a href="{{ url_for('mas_sobre') }}">Nosotros</a></li>
-                    
+
                     {% if not session.username %}
-                        <li class="site-nav__item"><a href="{{ url_for('crear_cuenta') }}">Crear cuenta</a></li>
-                        <li class="site-nav__item"><a href="{{ url_for('inicio_sesion') }}">Iniciar sesión</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('crear_cuenta') }}">Crear cuenta</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('inicio_sesion') }}">Iniciar sesión</a></li>
                     {% endif %}
 
                     {% if session.username %}
-                        {% if session.role == 'admin' %}
-                            <li class="site-nav__item"><a href="{{ url_for('admin_users') }}">Panel usuarios</a></li>
-                            <li class="site-nav__item"><a href="{{ url_for('admin_products') }}">Panel productos</a></li>
-                        {% else %}
-                            <li class="site-nav__item">
-                                <a href="{{ url_for('carrito') }}" class="cart-link">
-                                    <i class="bi bi-cart-fill"></i>
-                                    <span id="numerito" class="cart-badge">{{ cart_count | default(0) }}</span>
-                                </a>
-                            </li>
-                        {% endif %}
-                        <li class="site-nav__item"><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+                    {% if session.role == 'admin' %}
+                    <li class="site-nav__item"><a href="{{ url_for('admin_users') }}">Panel usuarios</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('admin_products') }}">Panel productos</a></li>
                     {% else %}
-                        <li class="site-nav__item">
-                            <a href="{{ url_for('carrito') }}" class="cart-link">
-                                <i class="bi bi-cart-fill"></i>
-                                <span id="numerito" class="cart-badge">{{ cart_count | default(0) }}</span>
-                            </a>
-                        </li>
+                    <li class="site-nav__item">
+                        <a href="{{ url_for('carrito') }}" class="cart-link">
+                            <i class="bi bi-cart-fill"></i>
+                            <span id="numerito" class="cart-badge">{{ cart_count | default(0) }}</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="site-nav__item"><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+                    {% else %}
+                    <li class="site-nav__item">
+                        <a href="{{ url_for('carrito') }}" class="cart-link">
+                            <i class="bi bi-cart-fill"></i>
+                            <span id="numerito" class="cart-badge">{{ cart_count | default(0) }}</span>
+                        </a>
+                    </li>
                     {% endif %}
                 </ul>
             </div>
@@ -85,32 +99,32 @@
                     <li class="site-nav__item"><a href="{{ url_for('instrumentos') }}">Instrumentos</a></li>
                     <li class="site-nav__item"><a href="{{ url_for('contacto') }}">Contacto</a></li>
                     <li class="site-nav__item"><a href="{{ url_for('mas_sobre') }}">Nosotros</a></li>
-                    
+
                     {% if not session.username %}
-                        <li class="site-nav__item"><a href="{{ url_for('crear_cuenta') }}">Crear cuenta</a></li>
-                        <li class="site-nav__item"><a href="{{ url_for('inicio_sesion') }}">Iniciar sesión</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('crear_cuenta') }}">Crear cuenta</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('inicio_sesion') }}">Iniciar sesión</a></li>
                     {% endif %}
 
                     {% if session.username %}
-                        {% if session.role == 'admin' %}
-                            <li class="site-nav__item"><a href="{{ url_for('admin_users') }}">Panel usuarios</a></li>
-                            <li class="site-nav__item"><a href="{{ url_for('admin_products') }}">Panel productos</a></li>
-                        {% else %}
-                            <li class="site-nav__item">
-                                <a href="{{ url_for('carrito') }}" class="cart-link">
-                                    <i class="bi bi-cart-fill"></i>
-                                    <span id="numerito-drawer" class="cart-badge">{{ cart_count | default(0) }}</span>
-                                </a>
-                            </li>
-                        {% endif %}
-                        <li class="site-nav__item"><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+                    {% if session.role == 'admin' %}
+                    <li class="site-nav__item"><a href="{{ url_for('admin_users') }}">Panel usuarios</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('admin_products') }}">Panel productos</a></li>
                     {% else %}
-                        <li class="site-nav__item">
-                            <a href="{{ url_for('carrito') }}" class="cart-link">
-                                <i class="bi bi-cart-fill"></i>
-                                <span id="numerito-drawer" class="cart-badge">{{ cart_count | default(0) }}</span>
-                            </a>
-                        </li>
+                    <li class="site-nav__item">
+                        <a href="{{ url_for('carrito') }}" class="cart-link">
+                            <i class="bi bi-cart-fill"></i>
+                            <span id="numerito-drawer" class="cart-badge">{{ cart_count | default(0) }}</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="site-nav__item"><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+                    {% else %}
+                    <li class="site-nav__item">
+                        <a href="{{ url_for('carrito') }}" class="cart-link">
+                            <i class="bi bi-cart-fill"></i>
+                            <span id="numerito-drawer" class="cart-badge">{{ cart_count | default(0) }}</span>
+                        </a>
+                    </li>
                     {% endif %}
                 </ul>
             </div>
@@ -121,7 +135,8 @@
     <!-- Mensaje de bienvenida (no mostrar en la página de inicio) -->
     {% if session.username and request.endpoint != 'index' %}
     <div class="welcome-message" style="margin: 1rem auto; max-width: 1200px;">
-        ¡Bienvenido/a <strong>{{ session.username }}</strong>! {% if session.role == 'admin' %}<span style="color: #000000;">(Administrador)</span>{% endif %}
+        ¡Bienvenido/a <strong>{{ session.username }}</strong>! {% if session.role == 'admin' %}<span
+            style="color: #000000;">(Administrador)</span>{% endif %}
     </div>
     {% endif %}
 
