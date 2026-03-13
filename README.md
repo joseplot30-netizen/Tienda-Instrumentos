@@ -20,7 +20,7 @@ La documentación completa está disponible en:
 
 1. Crear y activar un entorno virtual.
 2. Instalar dependencias: `pip install -r requirements.txt`.
-3. Configurar la base de datos MySQL (`bd_users`) o usar Aiven MySQL.
+3. Configurar la base de datos MySQL (`bd_users`) o usar Aiven MySQL. Puedes colocar las variables en un archivo `.env` (requiere `python-dotenv`) o exportarlas en el entorno.
 4. Ejecutar: `python app.py`.
 
 Luego acceder en `http://localhost:3000`.
@@ -30,4 +30,4 @@ Luego acceder en `http://localhost:3000`.
 - **Repositorio**: GitHub.
 - **Infraestructura**: Render (deploy continuo desde GitHub).
 - **Base de datos**: Aiven MySQL (conexión remota desde Render y MySQL Workbench).
-- **Analítica**: Google Analytics.
+- **Analítica**: Google Analytics u otra plataforma de métricas.
