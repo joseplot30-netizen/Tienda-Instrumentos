@@ -258,3 +258,4 @@ click outside → cerrar automáticamente
 ### Flujo de Gestión de Productos
 
 *Se explica en detalle en el documento principal `DOCUMENTACION_PROFESIONAL.md`.*
+
