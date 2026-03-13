@@ -1,5 +1,7 @@
 # Music Store (Proyecto Python)
 
+**Keywords:** Flask, MySQL, Aiven, Render, GitHub, despliegue, carrito, administrador, productos, Jinja2, CSS, JavaScript.
+
 Aplicación web de comercio electrónico para la venta de instrumentos musicales.
 
 ## 📚 Documentación
