@@ -155,34 +155,23 @@ def logout():
 
 @app.route('/sitemap.xml', methods=['GET'])
 def sitemap():
-    """Genera un sitemap XML básico con las rutas públicas de la aplicación."""
     base_url = request.url_root.rstrip('/')
     urls = [
-        '/',
-        '/inicio_sesion',
-        '/crear-cuenta',
-        '/instrumentos',
-        '/bajos',
-        '/baterias',
-        '/guitarras',
-        '/otros',
-        '/carrito',
-        '/contacto',
-        '/mas_sobre',
-        '/logout',
+        '/', '/inicio_sesion', '/crear-cuenta', '/instrumentos',
+        '/bajos', '/baterias', '/guitarras', '/otros',
+        '/carrito', '/contacto', '/mas_sobre'
     ]
 
     xml_parts = ['<?xml version="1.0" encoding="UTF-8"?>',
                  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
 
     for path in urls:
-        xml_parts.append('  <url>')
-        xml_parts.append(f'    <loc>{base_url}{path}</loc>')
-        xml_parts.append('  </url>')
+        xml_parts.append(f'  <url><loc>{base_url}{path}</loc></url>')
 
     xml_parts.append('</urlset>')
 
-    return Response("\n".join(xml_parts), mimetype='application/xml')
+    # El cambio clave: Aseguramos el mimetype correcto sin espacios extra
+    return Response("".join(xml_parts), mimetype='application/xml')
 
 # --- API Rutas para Productos ---
 @app.route('/api/productos/<categoria>')
