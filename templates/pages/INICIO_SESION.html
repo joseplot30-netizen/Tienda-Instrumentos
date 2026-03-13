@@ -11,7 +11,7 @@
 {% block content %}
 <main>
     <div class="formulario">
-        <p>Iniciar <br> sesión </p>
+        <p class="form-title">Iniciar <br> sesión</p>
         <form action="{{ url_for('inicio_sesion') }}" method="POST" style="max-width: 400px" id="form">
             <div class="mb-3">
                 <input type="text" name="username" id="username" placeholder="Usuario" required>
@@ -22,7 +22,7 @@
             <div class="d-grid">
                 <button type="submit" class="entrar-button">Iniciar sesión</button>
             </div>
-            <p class="mt-2 text-center">¿No tienes cuenta? <a href="{{ url_for('crear_cuenta') }}" class="link-secondary">Registrarse</a></p>
+            <p class="form-footer text-center">¿No tienes cuenta? <a href="{{ url_for('crear_cuenta') }}">Regístrate</a></p>
         </form>
     </div>
 </main>
