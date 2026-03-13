@@ -246,3 +246,4 @@ session['role']       # 'admin' o 'user' (str)
 ```json
 { "count": 0 }
 ```
+
