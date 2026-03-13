@@ -1,40 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://tu-dominio.com/</loc>
+    <loc>https://tienda-instrumentos.onrender.com/</loc>
   </url>
   <url>
-    <loc>https://tu-dominio.com/inicio_sesion</loc>
+    <loc>https://tienda-instrumentos.onrender.com/instrumentos</loc>
   </url>
   <url>
-    <loc>https://tu-dominio.com/crear-cuenta</loc>
+    <loc>https://tienda-instrumentos.onrender.com/bajos</loc>
   </url>
   <url>
-    <loc>https://tu-dominio.com/instrumentos</loc>
+    <loc>https://tienda-instrumentos.onrender.com/baterias</loc>
   </url>
   <url>
-    <loc>https://tu-dominio.com/bajos</loc>
+    <loc>https://tienda-instrumentos.onrender.com/guitarras</loc>
   </url>
   <url>
-    <loc>https://tu-dominio.com/baterias</loc>
+    <loc>https://tienda-instrumentos.onrender.com/otros</loc>
   </url>
   <url>
-    <loc>https://tu-dominio.com/guitarras</loc>
+    <loc>https://tienda-instrumentos.onrender.com/contacto</loc>
   </url>
   <url>
-    <loc>https://tu-dominio.com/otros</loc>
-  </url>
-  <url>
-    <loc>https://tu-dominio.com/carrito</loc>
-  </url>
-  <url>
-    <loc>https://tu-dominio.com/contacto</loc>
-  </url>
-  <url>
-    <loc>https://tu-dominio.com/mas_sobre</loc>
-  </url>
-  <url>
-    <loc>https://tu-dominio.com/logout</loc>
+    <loc>https://tienda-instrumentos.onrender.com/mas_sobre</loc>
   </url>
 </urlset>
 <parameter name="filePath">c:\Users\User\Downloads\python_proyecto\proyecto_python\sitemap.xml
