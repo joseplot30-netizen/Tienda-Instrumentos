@@ -9,14 +9,15 @@ app.secret_key = os.getenv('SECRET_KEY', 'Tienda-Musica')
 def get_db_connection():
     return mysql.connector.connect(
         host=os.getenv('DB_HOST'),
-        port=os.getenv('DB_PORT'),
+        # Convertimos a int porque las variables de entorno siempre vienen como texto
+        port=int(os.getenv('DB_PORT', 22510)), 
         user=os.getenv('DB_USER'),
         password=os.getenv('DB_PASSWORD'),
         database=os.getenv('DB_NAME'),
         ssl_ca='/etc/secrets/ca.pem',
-        ssl_verify_cert=True
+        ssl_verify_identity=False,
+        use_pure=True
     )
-
 def get_db_connection():
     return mysql.connector.connect(**db_config)
 
