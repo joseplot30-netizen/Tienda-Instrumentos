@@ -1,0 +1,563 @@
+# API ENDPOINTS - Documentación Completa de Rutas
+
+## 🔐 Autenticación
+
+### Sesión de Usuario
+
+Todas las rutas protegidas requieren autenticación. La sesión se inicia mediante `/inicio_sesion` y se valida automáticamente.
+
+**Variables de Sesión disponibles:**
+```python
+session['user_id']    # ID del usuario (int)
+session['username']   # Nombre de usuario (str)
+session['is_admin']   # Flag de administrador (bool)
+session['role']       # 'admin' o 'user' (str)
+```
+
+---
+
+## 📱 Rutas Públicas
+
+### GET `/`
+**Descripción**: Página de inicio  
+**Autenticación**: No requerida  
+**Respuesta**: HTML (página de inicio)
+
+```
+GET / HTTP/1.1
+→ 200 OK
+→ Render 'pages/index.html'
+```
+
+---
+
+### GET `/guitarras`, `/bajos`, `/baterias`, `/otros`
+**Descripción**: Catálogo por categoría  
+**Parámetros**: Ninguno  
+**Autenticación**: No requerida  
+**Respuesta**: HTML con productos filtrados
+
+```
+GET /guitarras HTTP/1.1
+→ 200 OK
+→ Query: SELECT * FROM products WHERE category='guitarras'
+→ Render template con resultados
+```
+
+**Características:**
+- Sidebar desplegable con filtros
+- Búsqueda por marca y rango de precio
+- Grid responsivo de productos
+
+---
+
+### GET `/carrito`
+**Descripción**: Vista del carrito de compras  
+**Autenticación**: No requerida  
+**Almacenamiento**: localStorage (cliente)  
+**Respuesta**: HTML interactivo
+
+```
+GET /carrito HTTP/1.1
+→ 200 OK
+→ JavaScript carga carrito desde localStorage
+→ Muestra resumen y opciones de compra
+```
+
+**Funcionalidades:**
+- Ver productos en carrito
+- Actualizar cantidad
+- Eliminar productos
+- Calcular total
+
+---
+
+### GET `/inicio_sesion`
+**Descripción**: Formulario de login  
+**Autenticación**: No requerida  
+**Respuesta**: HTML (formulario)
+
+```
+GET /inicio_sesion HTTP/1.1
+→ 200 OK
+→ Render 'pages/INICIO_SESION.html'
+```
+
+---
+
+### POST `/inicio_sesion`
+**Descripción**: Procesar autenticación de usuario  
+**Autenticación**: No requerida  
+
+**Parámetros (form-data):**
+```
+username: string (requerido)
+password: string (requerido)
+```
+
+**Respuesta exitosa:**
+```
+POST /inicio_sesion HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+username=juanperez&password=secreto123
+
+→ 302 Redirect
+→ Location: /
+→ session['user_id'] = 1
+→ session['username'] = 'juanperez'
+→ session['is_admin'] = false
+→ Flash: '¡Bienvenido juanperez!'
+```
+
+**Respuesta fallida:**
+```
+→ 200 OK
+→ Render 'pages/INICIO_SESION.html'
+→ Flash: 'Usuario o contraseña incorrecta'
+```
+
+---
+
+### GET `/registro`
+**Descripción**: Formulario de registro  
+**Autenticación**: No requerida  
+**Respuesta**: HTML
+
+```
+GET /registro HTTP/1.1
+→ 200 OK
+→ Render 'pages/CREAR_CUENTA.html'
+```
+
+---
+
+### POST `/registro`
+**Descripción**: Crear nueva cuenta de usuario  
+**Autenticación**: No requerida  
+
+**Parámetros (form-data):**
+```
+username: string (requerido, 3-50 chars)
+email: string (requerido, email válido)
+password: string (requerido, 6+ chars)
+password2: string (requerido, debe coincidir)
+```
+
+**Validaciones:**
+- ✓ Campos no vacíos
+- ✓ Passwords coinciden
+- ✓ Username único en BD
+- ✓ Email único en BD
+
+**Respuesta exitosa:**
+```
+POST /registro HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+username=nuevo_usuario&email=user@email.com&password=123456&password2=123456
+
+→ 302 Redirect
+→ Location: /inicio_sesion
+→ Flash: 'Usuario creado correctamente. Inicia sesión.'
+→ INSERT en tabla users
+```
+
+**Respuesta fallida:**
+```
+→ 200 OK
+→ Render formulario
+→ Flash: 'El usuario ya existe' | 'Las contraseñas no coinciden' | etc.
+```
+
+---
+
+### POST `/contacto`
+**Descripción**: Enviar mensaje de contacto  
+**Autenticación**: No requerida  
+
+**Parámetros (form-data):**
+```
+name: string (requerido)
+email: string (requerido)
+message: string (requerido)
+```
+
+**Respuesta:**
+```
+POST /contacto HTTP/1.1
+
+→ 302 Redirect
+→ Location: /mas-sobre
+→ Flash: 'Mensaje enviado'
+→ INSERT en tabla contacts (si implementado)
+```
+
+---
+
+### GET `/mas-sobre`
+**Descripción**: Página de información de empresa  
+**Autenticación**: No requerida  
+**Respuesta**: HTML
+
+```
+GET /mas-sobre HTTP/1.1
+→ 200 OK
+→ Render 'pages/MAS_SOBRE.html'
+```
+
+---
+
+### GET `/logout`
+**Descripción**: Cerrar sesión  
+**Autenticación**: Requerida (usuarios autenticados)  
+
+**Respuesta:**
+```
+GET /logout HTTP/1.1
+
+→ 302 Redirect
+→ Location: /
+→ Flash: 'Sesión cerrada'
+→ session.clear()
+```
+
+---
+
+## 🔒 Rutas Protegidas (Requieren Admin)
+
+### GET `/admin/users`
+**Descripción**: Listar todos los usuarios  
+**Autenticación**: Requerida (admin)  
+**Respuesta**: HTML con tabla de usuarios
+
+```
+GET /admin/users HTTP/1.1
+Cookie: session=...
+
+→ 200 OK
+→ Query: SELECT * FROM users
+→ Render 'admin/admin_users.html'
+→ Incluye búsqueda y filtros en tiempo real
+```
+
+**Características:**
+- Búsqueda por username, email, ID
+- Filtros: Todos, Administradores, Usuarios
+- Contadores por rol
+- Acciones: Editar, Eliminar
+
+---
+
+### GET/POST `/admin/users/create`
+**Descripción**: Crear nuevo usuario  
+**Autenticación**: Requerida (admin)  
+
+**GET - Mostrar formulario:**
+```
+GET /admin/users/create HTTP/1.1
+→ 200 OK
+→ Render form 'admin/admin_create_user.html'
+```
+
+**POST - Procesar creación:**
+```
+POST /admin/users/create HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+username=admin01&email=admin@example.com&password=secure&is_admin=1
+
+→ 302 Redirect
+→ Location: /admin/users
+→ Flash: 'Usuario creado correctamente'
+→ INSERT en tabla users
+```
+
+---
+
+### GET/POST `/admin/users/edit/<user_id>`
+**Descripción**: Editar usuario existente  
+**Autenticación**: Requerida (admin)  
+**Parámetros URL**: `user_id` (int)
+
+**GET - Mostrar formulario con datos actuales:**
+```
+GET /admin/users/edit/5 HTTP/1.1
+→ 200 OK
+→ Query: SELECT * FROM users WHERE id=5
+→ Render form con valores precargados
+```
+
+**POST - Procesar actualización:**
+```
+POST /admin/users/edit/5 HTTP/1.1
+
+username=new_name&email=new@email.com&is_admin=0
+
+→ 302 Redirect
+→ Location: /admin/users
+→ Flash: 'Usuario actualizado'
+→ UPDATE users SET ... WHERE id=5
+```
+
+---
+
+### POST `/admin/users/delete/<user_id>`
+**Descripción**: Eliminar usuario  
+**Autenticación**: Requerida (admin)  
+**Parámetros URL**: `user_id` (int)
+
+```
+POST /admin/users/delete/7 HTTP/1.1
+
+→ 302 Redirect
+→ Location: /admin/users
+→ Flash: 'Usuario eliminado'
+→ DELETE FROM users WHERE id=7
+```
+
+---
+
+### GET `/admin/products`
+**Descripción**: Listar todos los productos  
+**Autenticación**: Requerida (admin)  
+**Respuesta**: HTML con búsqueda avanzada
+
+```
+GET /admin/products HTTP/1.1
+→ 200 OK
+→ Query: SELECT * FROM products ORDER BY category, name
+→ Render 'admin/admin_products.html'
+```
+
+**Características:**
+- Búsqueda en tiempo real (nombre, marca, ID)
+- Filtros por categoría (botones activos)
+- Secciones agrupadas por categoría
+- Contadores de productos
+
+---
+
+### GET/POST `/admin/products/create`
+**Descripción**: Crear nuevo producto  
+**Autenticación**: Requerida (admin)  
+
+**GET - Mostrar formulario:**
+```
+GET /admin/products/create HTTP/1.1
+→ 200 OK
+→ Render 'admin/admin_create_product.html'
+```
+
+**POST - Procesar creación:**
+```
+POST /admin/products/create HTTP/1.1
+
+name=Guitar_X&price=800000&stock=5&category=guitarras&brand=yamaha&image_url=https://...
+
+→ 302 Redirect
+→ Location: /admin/products
+→ Flash: 'Producto creado correctamente'
+→ INSERT INTO products (...)
+```
+
+---
+
+### GET/POST `/admin/products/edit/<product_id>`
+**Descripción**: Editar producto existente  
+**Parámetros URL**: `product_id` (int)
+
+**GET:**
+```
+GET /admin/products/edit/42 HTTP/1.1
+→ 200 OK
+→ Query: SELECT * FROM products WHERE id=42
+→ Render form preload
+```
+
+**POST:**
+```
+POST /admin/products/edit/42 HTTP/1.1
+
+name=New_Name&price=900000&stock=3
+
+→ 302 Redirect
+→ UPDATE products SET ... WHERE id=42
+```
+
+---
+
+### POST `/admin/products/delete/<product_id>`
+**Descripción**: Eliminar producto  
+**Parámetros URL**: `product_id` (int)
+
+```
+POST /admin/products/delete/42 HTTP/1.1
+
+→ 302 Redirect
+→ Location: /admin/products
+→ Flash: 'Producto eliminado'
+→ DELETE FROM products WHERE id=42
+```
+
+---
+
+### GET/POST `/admin/contacto`
+**Descripción**: Gestionar información de contacto  
+**Autenticación**: Requerida (admin)  
+
+```
+GET /admin/contacto HTTP/1.1
+→ 200 OK
+→ Render 'admin/admin_contacto.html'
+
+POST /admin/contacto HTTP/1.1
+contact_text=Información nuevo contacto
+
+→ 302 Redirect
+→ Flash: 'Información de contacto actualizada'
+→ (Actualmente no persiste a BD)
+```
+
+---
+
+### GET/POST `/admin/nosotros`
+**Descripción**: Gestionar información de empresa  
+**Autenticación**: Requerida (admin)  
+
+```
+GET /admin/nosotros HTTP/1.1
+→ 200 OK
+→ Render 'admin/admin_nosotros.html'
+
+POST /admin/nosotros HTTP/1.1
+about_text=Información sobre nuestra empresa
+
+→ 302 Redirect
+→ Flash: 'Información actualizada'
+→ (Actualmente no persiste a BD)
+```
+
+---
+
+## 📊 API AJAX
+
+### POST `/api/productos`
+**Descripción**: Obtener lista de productos (AJAX)  
+**Autenticación**: No requerida  
+**Parámetros**: Ninguno  
+**Respuesta**: JSON
+
+```javascript
+POST /api/productos HTTP/1.1
+Content-Type: application/json
+
+→ 200 OK
+→ Content-Type: application/json
+→ [
+    {
+      id: 1,
+      name: "guitarra 01",
+      price: "800000",
+      stock: 10,
+      category: "guitarras",
+      brand: "yamaha",
+      image_url: "https://..."
+    },
+    ...
+  ]
+```
+
+### POST `/api/cart/count`
+**Descripción**: Obtener cantidad de items en carrito  
+**Autenticación**: No requerida  
+**Almacenamiento**: localStorage (cliente)  
+
+```javascript
+POST /api/cart/count HTTP/1.1
+
+→ 200 OK
+→ {"count": 0}
+→ (Por ahora retorna 0, gestión en cliente)
+```
+
+---
+
+## 📄 Códigos de Estado HTTP
+
+| Código | Significado | Ejemplo |
+|--------|-----------|---------|
+| 200 | OK | GET exitoso |
+| 302 | Found (Redirect) | POST exitoso con redireccionamiento |
+| 400 | Bad Request | Parámetros faltantes |
+| 401 | Unauthorized | No autenticado (redirige a login) |
+| 403 | Forbidden | Autenticado pero sin permisos admin |
+| 404 | Not Found | Recurso no existe |
+| 500 | Server Error | Error en el servidor |
+
+---
+
+## 🛡️ Manejo de Errores
+
+### Flash Messages
+Los errores y mensajes se comunican al usuario mediante flash messages:
+
+```python
+# Éxito
+flash('Operación completada', 'success')
+
+# Error
+flash('Hubo un error', 'danger')
+
+# Información
+flash('Por favor complete todos los campos', 'info')
+
+# Advertencia
+flash('Debes iniciar sesión', 'warning')
+```
+
+### Validación de Formularios
+
+**Cliente (JavaScript):**
+- Campos no vacíos
+- Formatos válidos (email, etc)
+
+**Servidor (Flask):**
+- Validación adicional
+- Verificación de unicidad
+- Control de permisos
+
+---
+
+## 📈 Límites y Consideraciones
+
+### Rate Limiting
+- No implementado (TODO en versión productiva)
+
+### Paginación
+- No implementada
+- Todos los productos cargan de una vez (hasta 100 items)
+
+### Búsqueda
+- Full-text search no implementado
+- Icase insensitive en cliente (JavaScript)
+
+### Permisos
+- Solo Admin o Owner pueden editar
+- Validación de propietario no implementada
+
+---
+
+## 📮 Endpoints Futuros
+
+- `POST /api/order` - Crear pedido
+- `GET /api/order/<id>` - Obtener detalles pedido
+- `POST /api/payment` - Procesar pago
+- `GET /api/user/profile` - Perfil de usuario
+- `PUT /api/user/profile` - Actualizar perfil
+- `POST /api/email/confirm` - Confirmación de email
+
+---
+
+**Documento mantenido**: 12 de marzo de 2026  
+**Última revisión**: Marzo 2026

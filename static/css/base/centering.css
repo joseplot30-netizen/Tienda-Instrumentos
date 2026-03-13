@@ -1,0 +1,180 @@
+/* centering.css - Estilos de centrado global para toda la aplicación */
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    background-color: #000000;
+    background-image: url('/static/img/22.jpg');
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    overflow-x: hidden;
+    /* El padding-top lo maneja nav_menu.css */
+}
+
+/* Contenedor principal centrado */
+.container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: clamp(12px, 3vw, 16px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Main centrado */
+main {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    padding: clamp(12px, 3vw, 20px);
+}
+
+/* Secciones centradas */
+section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Footer centrado */
+footer {
+    width: 100%;
+    text-align: center;
+}
+
+/* Formularios centrados */
+.formulario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.formulario form {
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Wrapper centrado (para carrito) */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 1rem;
+    padding-top: 0;
+    height: auto;
+    min-height: auto;
+}
+
+/* Aside/Sidebar para carrito: abajo en móvil */
+aside {
+    width: 100%;
+    max-width: 280px;
+    order: 2;
+}
+
+/* Main en carrito: arriba */
+main {
+    width: 100%;
+    order: 1;
+}
+
+/* Galería centrada */
+.gallery {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+}
+
+/* Alertas centradas */
+.alert {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Tablas centradas */
+table {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Responsive: en pantallas pequeñas */
+@media (max-width: 520px) {
+    body {
+        padding-top: 70px;
+    }
+    
+    .container {
+        padding: 0 8px;
+    }
+    
+    main {
+        padding: 8px;
+    }
+}
+
+@media (min-width: 521px) and (max-width: 767px) {
+    body {
+        padding-top: 70px;
+    }
+    
+    .container {
+        padding: 0 12px;
+    }
+    
+    main {
+        padding: 12px;
+    }
+}
+
+@media (min-width: 768px) {
+    .wrapper {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    
+    aside {
+        order: 0;
+        position: sticky;
+        top: 80px;
+    }
+    
+    main {
+        order: 0;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+    }
+}

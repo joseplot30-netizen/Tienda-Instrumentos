@@ -1,0 +1,105 @@
+/* style_instrumentos.css - Página de instrumentos centrada */
+
+html {
+    max-height: auto;
+    overflow: auto;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    background-color: rgb(0, 0, 0);
+    background-image: url('/static/img/22.jpg');
+    background-repeat: repeat;
+    background-attachment: fixed;
+}
+
+section {
+    display: flex;
+    width: 100%;
+    height: auto;
+    border-radius: 22px;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+/* Mobile: 2 columns, 2 rows */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.gallery a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 2px solid rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0.3);
+    aspect-ratio: 1;
+}
+
+.gallery img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    border-radius: 12px;
+    display: block;
+}
+
+.gallery a:hover img {
+    transform: scale(1.05);
+    opacity: 0.95;
+    cursor: pointer;
+}
+
+/* Tablet: 2 columns, larger images */
+@media screen and (min-width: 601px) and (max-width: 1023px) {
+    .gallery {
+        grid-template-columns: repeat(2, .4fr);
+        gap: 40px;
+
+    }
+    
+    .gallery a {
+        aspect-ratio: 1.1;
+        width: 110%;
+        height: 110%;
+    }
+}
+
+/* Desktop: horizontal scroll */
+@media screen and (min-width: 1024px) {
+    .gallery {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        gap: 18px;
+    }
+    
+    .gallery a {
+        flex: 0 0 auto;
+        width: 200px;
+        height: 440px; /* The container size */
+        aspect-ratio: auto;
+        border-radius: 12px;
+        border: 2px solid rgb(255, 255, 255);
+    }
+    
+    .gallery img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover;
+    }
+}

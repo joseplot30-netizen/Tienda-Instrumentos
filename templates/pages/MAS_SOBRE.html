@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <title>MAS SOBRE MUSIC STORE</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/style_mas.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+{% endblock %}
+
+{% block brand %}Mas Sobre{% endblock %}
+
+{% block content %}
+    <section style="position: relative;">
+        {% if session.role == 'admin' %}
+        <div style="position: absolute; top: 1rem; right: 1rem;">
+            <a href="{{ url_for('admin_nosotros') }}" class="btn btn-primary" style="text-decoration: none; padding: 0.5rem 1rem; background-color: #ffcc00; color: #000; border-radius: 6px; font-weight: bold; display: inline-flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+        </div>
+        {% endif %}
+        <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo">
+        <h2>TU EXPERIENCIA ES LA QUE CUENTA</h2>
+        <h3>somos una tienda especializada en
+            instrumentos musicales para disfrutar adecuadamente
+            la musica, mantenemos un margen estricto de calidad
+            en cada uno de nuestros articulos por mas minimo que sea.
+        </h3>
+    </section>
+{% endblock %}

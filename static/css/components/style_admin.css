@@ -1,0 +1,293 @@
+/* style_admin.css - Estilos para paneles de administración */
+
+:root{
+    --card-bg: rgba(255,255,255,0.04);
+    --accent: #ffcc00;
+    --muted: rgba(255,255,255,0.7);
+    --danger: #e04646;
+}
+
+html,body{
+    height:100%;
+    margin:0;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    background-color: var(--bg);
+    color: #fff;
+}
+
+/* Contenedor principal */
+.admin-container{
+    max-width:1200px;
+    margin:30px auto;
+    padding:20px;
+}
+
+.admin-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+}
+
+.admin-title{
+    font-size:1.6rem;
+    font-weight:700;
+    color: var(--accent);
+}
+
+.admin-actions{
+    display:flex;
+    gap:8px;
+}
+
+.btn{
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.12);
+    color:#fff;
+    padding:8px 14px;
+    border-radius:8px;
+    text-decoration:none;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.btn:hover{ opacity:0.95; }
+.btn-primary{ background: var(--accent); color:#000; }
+.btn-danger{ background: var(--danger); border-color: rgba(0,0,0,0.2); }
+
+/* Tarjetas y paneles */
+.card{
+    background: var(--card-bg);
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:12px;
+    padding:16px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.6);
+}
+
+.grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:18px;
+}
+
+/* Lista de usuarios (tabla responsive) */
+.table-responsive{
+    width:100%;
+    overflow-x:auto;
+}
+
+.admin-table{
+    width:100%;
+    border-collapse:collapse;
+    overflow:hidden;
+    border-radius:8px;
+    vertical-align:middle;
+}
+
+.admin-table th, .admin-table td{
+    padding:12px 10px;
+    text-align:center;
+    border-bottom:1px solid rgba(255,255,255,0.04);
+    font-size:0.95rem;
+    vertical-align:middle;
+}
+
+.admin-table thead th{
+    color:var(--accent);
+    font-weight:700;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    text-align:center;
+}
+
+/* Alineación específica por columna */
+.admin-table td:first-child, .admin-table th:first-child{
+    text-align:center;
+    width:60px;
+}
+
+.admin-table td:nth-child(2), .admin-table th:nth-child(2){
+    text-align:left;
+    min-width:140px;
+}
+
+.admin-table td:nth-child(3), .admin-table th:nth-child(3){
+    text-align:left;
+    min-width:200px;
+}
+
+.admin-table td:nth-child(4), .admin-table th:nth-child(4){
+    text-align:center;
+    min-width:120px;
+}
+
+.admin-table td:nth-child(5), .admin-table th:nth-child(5){
+    text-align:center;
+    min-width:180px;
+}
+
+.avatar{
+    width:44px;
+    height:44px;
+    border-radius:8px;
+    object-fit:cover;
+    border:1px solid rgba(255,255,255,0.06);
+}
+
+.muted{ color:var(--muted); font-size:0.9rem; }
+
+.actions{ display:flex; gap:8px; align-items:center; }
+
+/* Formulario de creación/edición */
+.admin-form{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.form-row{ display:flex; gap:10px; flex-wrap:wrap; }
+.form-control{
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.08);
+    padding:10px 12px;
+    border-radius:8px;
+    color:#fff;
+    min-width:180px;
+}
+
+.form-control:focus{ outline:2px solid rgba(255,204,0,0.18); }
+
+.form-label{ font-size:0.9rem; color:var(--muted); }
+
+/* Mensajes y estados */
+.status{ padding:8px 12px; border-radius:8px; font-weight:600; }
+.status-ok{ background: rgba(0,160,80,0.12); color:#9ff0b0; }
+.status-warn{ background: rgba(255,204,0,0.08); color:var(--accent); }
+
+/* Responsive */
+@media screen and (max-width: 480px){
+    .admin-container{
+        max-width:100%;
+        margin:15px auto;
+        padding:12px;
+    }
+    
+    .admin-header{
+        flex-direction:column;
+        align-items:stretch;
+    }
+    
+    .admin-title{
+        font-size:1.35rem;
+    }
+    
+    .admin-actions{
+        width:100%;
+    }
+    
+    .btn{
+        flex:1;
+        text-align:center;
+    }
+    
+    .form-row{ flex-direction:column; }
+    
+    /* Tabla: scroll horizontal en móvil */
+    .table-responsive{
+        overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+    }
+    
+    .admin-table{
+        min-width:600px;
+        font-size:0.85rem;
+    }
+    
+    .admin-table th, .admin-table td{
+        padding:10px 8px;
+        font-size:0.85rem;
+    }
+    
+    .admin-table td:nth-child(2), .admin-table th:nth-child(2){
+        min-width:120px;
+    }
+    
+    .admin-table td:nth-child(3), .admin-table th:nth-child(3){
+        min-width:180px;
+    }
+    
+    .admin-table td:nth-child(5), .admin-table th:nth-child(5){
+        min-width:160px;
+    }
+    
+    .actions{
+        flex-direction:column;
+        gap:4px;
+    }
+    
+    .btn{
+        padding:6px 10px;
+        font-size:0.8rem;
+    }
+    
+    .form-control{
+        min-width:100%;
+    }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px){
+    .admin-container{
+        max-width:100%;
+        margin:20px auto;
+        padding:16px;
+    }
+    
+    .admin-title{
+        font-size:1.45rem;
+    }
+    
+    .form-row{ flex-direction:column; }
+    
+    .admin-table{
+        font-size:0.9rem;
+    }
+    
+    .admin-table th, .admin-table td{
+        padding:11px 9px;
+        font-size:0.9rem;
+    }
+    
+    .admin-table td:nth-child(2), .admin-table th:nth-child(2){
+        min-width:130px;
+    }
+    
+    .admin-table td:nth-child(3), .admin-table th:nth-child(3){
+        min-width:190px;
+    }
+    
+    .admin-table td:nth-child(5), .admin-table th:nth-child(5){
+        min-width:170px;
+    }
+    
+    .actions{
+        flex-wrap:wrap;
+        gap:6px;
+    }
+}
+
+@media screen and (min-width: 769px){
+    .grid{ grid-template-columns: 1fr 360px; align-items:start; }
+    
+    .admin-table{
+        font-size:0.95rem;
+    }
+    
+    .admin-table th, .admin-table td{
+        padding:12px 10px;
+    }
+}
+
+/* Pequeños ajustes visuales para consistencia con otras hojas */
+a{ color:inherit; }
+
+/* Final */

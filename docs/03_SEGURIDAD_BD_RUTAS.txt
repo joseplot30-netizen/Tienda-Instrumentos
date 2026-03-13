@@ -1,0 +1,181 @@
+# SEGURIDAD Y AUTENTICACIÓN - Sistema de Protección
+
+## 🔒 Seguridad y Autenticación
+
+### Roles de Usuario
+
+- **Usuario Regular**: Acceso a catálogo, carrito, contacto
+- **Administrador**: Acceso completo incluyendo panel de control
+
+### Sistema de Sesiones
+
+- Uso de `session` de Flask para gestión de estado
+- Verificación de permisos mediante decorador `@admin_required`
+- Flash messages para feedback de usuario
+
+**Notas de Seguridad**:
+⚠️ En producción implementar:
+- Hashing de contraseñas (bcrypt, werkzeug.security)
+- HTTPS obligatorio
+- CSRF tokens
+- SQL injection prevention con prepared statements ✅
+
+---
+
+## 📊 Base de Datos
+
+### Tablas Principales
+
+#### `users`
+```sql
+id (PK)
+username (VARCHAR 255, UNIQUE)
+email (VARCHAR 255, UNIQUE)
+password (VARCHAR 255)
+is_admin (BOOLEAN)
+created_at (TIMESTAMP)
+```
+
+#### `products`
+```sql
+id (PK)
+name (VARCHAR 255)
+price (DECIMAL 10,2)
+stock (INT)
+category (VARCHAR 100)
+brand (VARCHAR 100)
+image_url (VARCHAR 500)
+created_at (TIMESTAMP)
+```
+
+#### `contacts` (Referencia)
+```sql
+id (PK)
+name (VARCHAR 255)
+email (VARCHAR 255)
+message (TEXT)
+created_at (TIMESTAMP)
+```
+
+---
+
+## 🛣️ Rutas y Endpoints
+
+### Rutas Públicas
+
+| Método | Ruta | Descripción |
+|--------|------|-----------|
+| GET | `/` | Página de inicio |
+| GET | `/guitarras`, `/bajos`, `/baterias`, `/otros` | Categorías de productos |
+| GET | `/carrito` | Carrito de compras |
+| POST | `/api/productos` | Obtener lista de productos |
+| GET | `/inicio_sesion` | Formulario de login |
+| POST | `/inicio_sesion` | Procesar login |
+| GET | `/registro` | Formulario de registro |
+| POST | `/registro` | Procesar registro |
+| GET | `/mas-sobre` | Página de información |
+| GET | `/contacto` | Formulario de contacto |
+| POST | `/contacto` | Enviar contacto |
+| GET | `/logout` | Cerrar sesión |
+
+### Rutas Administrativas (protegidas)
+
+| Método | Ruta | Descripción |
+|--------|------|-----------|
+| GET | `/admin/users` | Listar usuarios |
+| GET/POST | `/admin/users/create` | Crear usuario |
+| GET/POST | `/admin/users/edit/<id>` | Editar usuario |
+| POST | `/admin/users/delete/<id>` | Eliminar usuario |
+| GET | `/admin/products` | Listar productos |
+| GET/POST | `/admin/products/create` | Crear producto |
+| GET/POST | `/admin/products/edit/<id>` | Editar producto |
+| POST | `/admin/products/delete/<id>` | Eliminar producto |
+| GET/POST | `/admin/contacto` | Gestionar info de contacto |
+| GET/POST | `/admin/nosotros` | Gestionar info de empresa |
+
+---
+
+## 🎨 Diseño y Responsividad
+
+### Breakpoints
+
+- **Móvil**: ≤ 480px
+- **Tablet**: 481px - 768px
+- **Desktop**: ≥ 769px
+
+### Componentes Clave
+
+#### Menú de Hamburguesa
+- Panel de navegación colapsable
+- Overlay semi-transparente
+- Botón de cierre (X)
+- Lógica global en `ui.js`
+
+#### Filtros de Productos
+- Sidebar desplegable con filtros
+- Búsqueda por precio, marca
+- Aplicación de filtros reactiva
+
+#### Panel Administrativo
+- Tablas responsivas con scroll horizontal en móvil
+- Vista de tarjetas en admin con búsqueda en tiempo real
+- Filtros por categoría/rol
+
+---
+
+## 🔧 Desarrollo y Extensiones
+
+### Próximas Mejoras Recomendadas
+
+1. **Seguridad**
+   - Implementar hashing de contraseñas
+   - Añadir HTTPS
+   - Validación CSRF
+
+2. **Testing**
+   - Unit tests para rutas
+   - Tests E2E para flujos de usuario
+   - Tests de seguridad
+
+3. **Performance**
+   - Caché de productos
+   - Compresión de imágenes
+   - Minificación de assets
+
+4. **Funcionalidades**
+   - Sistema de órdenes de compra
+   - Pagos integrados
+   - Email de confirmación
+   - Reseñas y ratings
+
+5. **Base de Datos**
+   - Auditoría de cambios
+   - Backup automático
+   - Optimización de queries
+
+---
+
+## ✅ Checklist de Verificación
+
+- [x] Menú de hamburguesa global funcional
+- [x] Búsqueda y filtros de productos
+- [x] Panel administrativo mejorado
+- [x] Tablas responsivas
+- [x] Sistema de sesiones
+- [x] Gestión de usuarios
+- [x] Gestión de productos
+- [ ] Sistema de órdenes (TODO)
+- [ ] Pasarela de pagos (TODO)
+- [ ] Email transaccional (TODO)
+
+---
+
+## 📞 Soporte
+
+Para reportar issues o sugerencias, contactar al equipo de desarrollo.
+
+---
+
+**Última actualización**: 12 de marzo de 2026  
+**Versión**: 1.0.0  
+**Estado**: En Desarrollo

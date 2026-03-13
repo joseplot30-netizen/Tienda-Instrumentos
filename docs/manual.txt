@@ -1,0 +1,194 @@
+Manual de Documentación del Proyecto
+===================================
+
+Este documento funciona como un manual técnico y de usuario para la aplicación "proyecto_python". Describe la estructura del proyecto, componentes clave, comportamiento de rutas, uso de plantillas, flujo de datos, estilos y notas de despliegue. Está pensado tanto para desarrolladores que mantengan o amplíen el proyecto como para usuarios que deseen comprender cómo interaccionan el backend y el frontend.
+
+---
+
+1. Descripción general del proyecto
+----------------------------------
+
+El repositorio contiene una pequeña aplicación web desarrollada en Python. Existen dos puntos de entrada:
+
+* `app.py`: aplicación basada en Flask que implementa el sitio principal y las rutas API.
+
+Ambas aplicaciones comparten las mismas plantillas y recursos estáticos; la diferencia reside únicamente en el framework de enrutamiento y en cómo se gestionan las peticiones.
+
+La aplicación ofrece:
+
+* Una tienda pública con categorías de instrumentos musicales (guitarras, bajos, baterías, otros).
+* Autenticación con creación de cuentas e inicio de sesión para usuarios, y cuentas elevadas de "admin".
+* Un panel administrativo que permite crear y editar usuarios y productos.
+* Un carrito de compras del lado del cliente gestionado mediante localStorage y sincronizado con el servidor.
+* APIs para obtener productos por categoría y recuperar el conteo del carrito.
+* Un formulario de contacto y páginas informativas (Contacto, Más Sobre).
+
+Los registros de usuarios se almacenan en una base de datos MySQL (`bd_users`). Los datos de productos también se guardan en una tabla MySQL accesible vía API.
+
+
+2. Estructura de directorios
+---------------------------
+
+```
+proyecto_python/
+  app.py              # código de la aplicación Flask
+  insertar_productos.py  # script auxiliar para insertar productos
+  templates/
+    layout.html       # plantilla base usada por todas las demás
+    admin/            # páginas administrativas (CRUD de usuarios/productos)
+    pages/            # páginas públicas (index, instrumentos, contacto, etc.)
+  static/
+    css/
+      base/           # estilos base aplicados globalmente
+      layout/         # CSS de navegación, sidebar y maquetación
+      components/     # componentes estilísticos como contacto.css, mas.css
+      pages/          # estilos específicos de cada página
+    js/               # scripts cliente (menus, carrito, etc.)
+    img/              # imágenes usadas en fondos y productos
+  docs/
+    manual.txt        # este documento de manual
+```
+
+
+3. Aplicación Flask (`app.py`)
+-----------------------------
+
+### Configuración y utilidades
+
+* `app = Flask(__name__)` crea la aplicación. `app.secret_key` se utiliza para gestionar la sesión.
+* `db_config` almacena los parámetros de conexión MySQL. La función `get_db_connection()` devuelve una nueva conexión.
+* El decorador `admin_required` impide el acceso a ciertas rutas si el usuario no está autenticado como administrador.
+
+### Rutas de usuario
+
+* `/` → `index()` renderiza `pages/index.html`.
+* `/inicio_sesion` → página de login. En POST, valida credenciales contra la tabla `users`, configura variables de sesión y redirige a la página de instrumentos o al panel de usuarios del admin.
+* `/crear-cuenta` → registro de usuarios. Valida datos, comprueba existencia de nombre/email, inserta un nuevo registro en `users` y muestra mensajes flash. Acepta GET y POST.
+* `/instrumentos`, `/bajos`, `/baterias`, `/guitarras`, `/otros`: páginas de navegación de productos que renderizan plantillas correspondientes.
+* `/carrito` → página del carrito de compras.
+* `/contacto` → formulario de contacto. En POST muestra un mensaje de éxito/advertencia; no hay almacenamiento persistente aún.
+* `/mas_sobre` → página informativa "sobre nosotros".
+* `/logout` → limpia la sesión y redirige al índice.
+
+### Rutas administrativas y API
+
+* `/admin/init-products` → ayuda a insertar productos iniciales en la base de datos (GET muestra un botón, POST ejecuta la inserción). Usado en desarrollo.
+* `/api/productos/<categoria>` → devuelve una lista JSON de productos según la categoría. Los datos se normalizan: precios a enteros, categorías con nombre e id.
+* `/api/carrito-count` → devuelve `{'count': 0}`. Marcador de posición para el conteo del carrito en el servidor.
+
+Hay rutas CRUD de admin adicionales más abajo en el archivo para gestionar usuarios y productos. Todas comienzan con `/admin/...` y están decoradas con `admin_required`.
+
+### Actualizaciones de rutas de plantilla
+
+Todas las llamadas a `render_template()` referencian plantillas dentro de la subcarpeta `pages/`. Esta reorganización se realizó durante el desarrollo; originalmente había plantillas en la raíz. Si se añaden nuevas plantillas en el futuro, mantenga la misma estructura o actualice las rutas.
+
+
+5. Plantillas
+-------------
+
+Todas las plantillas extienden `layout.html`, que define la cabecera, navegación, barra lateral y pie de página. Los bloques disponibles para sobreescribir son:
+
+* `head` – `<title>` específico y enlaces/scripts adicionales.
+* `brand` – texto del área del logo o breadcrumb.
+* `content` – contenido principal; cada página define su propia estructura.
+
+#### Carpeta Pages
+
+* `index.html` – página principal con categorías de instrumentos y mensaje de bienvenida.
+* `INICIO_SESION.html` / `CREAR_CUENTA.html` – formularios de autenticación con estilos de `pages.css`.
+* `CONTACTO.html` – página de contacto con información y formulario; usa `style_contacto.css`.
+* `MAS_SOBRE.html` – página "sobre nosotros" con estilo `style_mas.css`.
+* Páginas de categoría (`bajos.html`, etc.) muestran listados y cargan scripts de menú/barra lateral.
+* `CARRITO_DE_COMPRAS.html` – muestra los ítems agregados al carrito.
+
+#### Carpeta Admin
+
+* `admin_users.html`, `admin_products.html`, `admin_create_user.html`, `admin_edit_user.html`, etc. gestionan flujos administrativos. Siguen patrones similares a las demás plantillas.
+
+
+6. Recursos estáticos
+--------------------
+
+El CSS se organiza en subdirectorios para facilitar mantenimiento:
+
+* `css/base` – utilidades y resets globales (centering, mobile, estilos generales).
+* `css/layout` – estilos de barra de navegación, menú lateral y maquetación.
+* `css/components` – estilos de secciones individuales (contacto, sobre nosotros).
+* `css/pages` – estilos aplicados a todas las páginas comunes (`.formulario`, etc.).
+
+Los archivos JavaScript proporcionan interactividad:
+
+* `menus.js` – [eliminado] antigua librería de menús, reemplazada por `ui.js` y `filtros.js`.
+* `carrito.js` / `sincronizar_carrito.js` – gestionan el carrito y sincronizan el conteo con la API.
+* `contacto.js` – validación del formulario de contacto en el cliente.
+* `fix_scroll.js` – asegura desplazamiento suave y oculta barras de scroll cuando están abiertas solapas.
+
+Las imágenes viven en `static/img` y son referenciadas desde CSS o plantillas (fondos, productos, etc.).
+
+
+7. Notas sobre el esquema de base de datos
+------------------------------------------
+
+La base de datos `bd_users` contiene al menos las siguientes tablas (inferidas del código):
+
+* `users` con campos `id`, `username`, `email`, `password` e `is_admin` (o `role` en FastAPI). Las contraseñas se guardan en texto plano en este demo; debe implementarse hashing para producción.
+* `products` con campos `id`, `name`, `price`, `image_url`, `category`, `brand`. El script `insertar_productos.py` rellena datos de ejemplo.
+
+En futuras mejoras podría añadirse una tabla `cart_items` vinculada a usuarios.
+
+
+8. Guía de uso
+--------------
+
+### Iniciar el servidor
+
+```powershell
+# usando la app Flask
+python app.py
+# o usando FastAPI con uvicorn
+uvicorn main:app --reload
+```
+
+Ajustar el comando según el entorno. El servidor de desarrollo escucha en `localhost:5000` o `localhost:8000` respectivamente.
+
+### Crear un usuario
+
+Ir a `/crear-cuenta`, completar el formulario de registro. Luego iniciar sesión en `/inicio_sesion`.
+
+### Acceso de administrador
+
+Poner `is_admin` en `1` directamente en la base de datos para un usuario y volver a iniciar sesión. Los admins verán opciones adicionales en el menú y podrán acceder a las rutas bajo `/admin`.
+
+### Añadir productos
+
+Ejecutar la ruta `/admin/init-products` desde el navegador o correr `insertar_productos.py` para rellenar la tabla de productos.
+
+### Estilizar páginas
+
+Modificar los archivos CSS dentro de `static/css` y asegurarse de que las plantillas referencien los nuevos estilos. Usar parámetros de consulta (`?v=1`) para invalidar la caché después de actualizar un recurso.
+
+
+9. Consejos y convenciones de desarrollo
+---------------------------------------
+
+* Utiliza `url_for()` con los nombres de endpoint definidos por los nombres de las funciones. Al reorganizar rutas, actualiza las llamadas en las plantillas.
+* Guarda fragmentos reutilizables en `layout.html` y solo sobreescribe lo necesario en las plantillas hijas.
+* Coloca todas las plantillas de usuario en `templates/pages` y separa las de admin en otra carpeta.
+* Al editar CSS/JS, organiza los archivos semánticamente (base, layout, components, pages) y referencia con `url_for('static', filename='...')`.
+* Evita codificar rutas de forma rígida; confía en `url_for` para construirlas dinámicamente.
+* El objeto `session` contiene el estado del usuario: `user_id`, `username`, `is_admin`, `role`. Consulta `session.get('role')` en las plantillas para contenido condicional.
+
+
+10. Mejoras futuras
+-------------------
+
+* **Seguridad**: aplicar hash a contraseñas, proteger contra CSRF y sanear entradas de usuario.
+* **Persistencia**: almacenar mensajes de contacto y datos del carrito en la base de datos.
+* **Modularidad**: dividir las rutas en Blueprints (Flask) o routers (FastAPI) para mayor claridad.
+* **Pruebas**: añadir tests unitarios e integrados usando pytest/flask-testing.
+* **Despliegue**: configurar un servidor WSGI de producción (gunicorn/uwsgi) y una base de datos con credenciales seguras.
+
+
+---
+
+Este manual cubre la base de código "hasta el rincón más oscuro" – cada directorio, ruta y configuración ha sido mencionada. Los nuevos desarrolladores deben leer este documento antes de modificar el sistema; los usuarios finales pueden consultar las secciones de la Guía de Uso para tareas típicas.

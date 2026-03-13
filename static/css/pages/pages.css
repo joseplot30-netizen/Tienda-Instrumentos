@@ -1,0 +1,317 @@
+/* pages.css - Estilos consolidados para páginas: contacto, mas_sobre, inicio_sesion */
+
+:root {
+    --transition: 0.3s ease;
+    --border-radius: 12px;
+    --color-text: #ffffff;
+    --color-primary: #1a08dcae;
+    --color-secondary: #1a08dcae;
+    --color-bg: rgba(0, 0, 0, 0.8);
+    --color-danger: #dc0808;
+    --color-warning: #fff3cd;
+    --color-input: #f0f0f0;
+}
+
+/* Base para todas las páginas */
+html {
+    scroll-behavior: smooth;
+    max-height: auto;
+    overflow: auto;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000000;
+    background-image: url('/static/img/22.jpg');
+    background-repeat: repeat;
+    background-position: 100%;
+    background-attachment: fixed;
+    color: var(--color-text);
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* ===== PÁGINA DE CONTACTO ===== */
+#contact-section {
+    padding: 2rem;
+    margin-top: 0px;
+    min-height: calc(100vh - 80px);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.contact-content {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.contact-info,
+.contact-form {
+    flex: 1 1 300px;
+}
+
+.contact-form form input,
+.contact-form form textarea,
+.contact-form form button {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: none;
+}
+
+/* ===== PÁGINA DE CONTACTO (ajustes adicionales) ===== */
+.contact-info {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contact-info .info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.contact-info .info-item i {
+    color: var(--color-primary);
+    font-size: 1.2rem;
+}
+
+.map-container {
+    flex: 1 1 300px;
+}
+
+.map-container h2 {
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 300px;
+    border: 0;
+    border-radius: var(--border-radius);
+}
+
+/* ===== PÁGINA "SOBRE NOSOTROS" ===== */
+.about-section {
+    padding: 2rem;
+    color: #fafafa;
+}
+
+.about-section img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+/* ===== FORMULARIOS - INICIO DE SESIÓN / CREAR CUENTA ===== */
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 70px);
+    padding: 2rem 1rem;
+}
+
+.formulario {
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, rgba(26, 8, 220, 0.15), rgba(30, 30, 30, 0.5));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.formulario p {
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    font-weight: 800;
+    text-align: left;
+    color: #ffcc00;
+    margin: 0 0 2.5rem -2.0rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.formulario form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-right: -2.0rem;
+}
+
+.mb-3 {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formulario input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.formulario input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.formulario input:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #ffcc00;
+    box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.15);
+}
+
+.formulario input:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.d-grid {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.formulario button {
+    padding: 0.95rem 1.5rem;
+    background: linear-gradient(135deg, #ffcc00 0%, #ffb800 100%);
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-weight: 800;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 204, 0, 0.3);
+}
+
+.formulario button:hover {
+    background: linear-gradient(135deg, #ffe533 0%, #ffd700 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 204, 0, 0.4);
+}
+
+.formulario button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(255, 204, 0, 0.3);
+}
+
+.formulario p1 {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+.formulario a {
+    color: #ffcc00;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.formulario a:hover {
+    color: #ffe533;
+    text-decoration: underline;
+}
+
+/* Media Queries para formularios */
+@media (max-width: 480px) {
+    .formulario {
+        padding: 2rem;
+        border-radius: 12px;
+    }
+
+    .formulario p {
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .formulario input {
+        padding: 0.8rem 0.9rem;
+        font-size: 0.9rem;
+    }
+
+    .formulario button {
+        padding: 0.8rem 1rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 768px) {
+    main {
+        min-height: auto;
+        padding: 2rem 1rem;
+    }
+
+    .formulario {
+        max-width: 100%;
+    }
+}
+
+/* ===== MENSAJE DE BIENVENIDA ===== */
+.welcome-message {
+    background: linear-gradient(135deg, #ffcc00 0%, #ffb800 100%);
+    color: #000;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    text-align: center;
+    animation: fadeIn 0.8s ease;
+    font-weight: 600;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Media Queries menores */
+@media (max-width: 520px) {
+    .contact-content {
+        flex-direction: column;
+    }
+
+    .welcome-message {
+        font-size: 0.9rem;
+    }
+}

@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+<title>Registro</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/pages.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+{% endblock %}
+
+{% block brand %}Registro{% endblock %}
+
+{% block content %}
+<main>
+    <div class="formulario">
+        <p>REGISTRO</p>
+        <form action="{{ url_for('crear_cuenta') }}" method="POST" style="max-width: 400px" id="registro-form">
+            <div class="mb-3">
+                <input type="text" name="username" id="username" placeholder="Usuario" required>
+            </div>
+            <div class="mb-3">
+                <input type="email" name="email" id="email" placeholder="Email" required>
+            </div>
+            <div class="mb-3">
+                <input type="password" name="password" id="password" placeholder="Contraseña" required>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="entrar-button">Registrar</button>
+            </div>
+            <p1 class="mt-2">¿Ya tienes cuenta? <a href="{{ url_for('inicio_sesion') }}" id="Iniciar">Inicia sesión</a>
+            </p1>
+        </form>
+    </div>
+</main>
+<!-- Menú antiguo eliminado de esta plantilla; usa el nav del layout -->
+{% endblock %}

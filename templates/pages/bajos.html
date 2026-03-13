@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <title>BAJOS ELECTRICOS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/instrumentos.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout/sidebar_menu.css') }}">
+{% endblock %}
+
+{% block content %}
+    <button class="sidebar-toggle" aria-label="Abrir menú de filtros">
+        <i class="bi bi-funnel-fill"></i>
+    </button>
+
+    <div class="sidebar-overlay"></div>
+    <aside class="sidebar closed">
+        <div class="sidebar-section precios">
+            <div class="sidebar-section-title">💰 Filtrar Precio</div>
+            <div class="precio-options">
+                <label>
+                    <strong>Precio Mínimo</strong>
+                    <input type="number" id="precio-min" placeholder="0" min="0">
+                </label>
+                <label>
+                    <strong>Precio Máximo</strong>
+                    <input type="number" id="precio-max" placeholder="1000000" min="0">
+                </label>
+                <button id="aplicar-filtros" class="apply-filters">Aplicar Filtros</button>
+            </div>
+        </div>
+        <div class="sidebar-section marcas">
+            <div class="sidebar-section-title">🏷️ Marcas</div>
+            <div class="marca-options">
+                <label><input type="checkbox" class="marca-filter" value="yamaha" checked> Yamaha</label>
+                <label><input type="checkbox" class="marca-filter" value="ibanez" checked> Ibanez</label>
+                <label><input type="checkbox" class="marca-filter" value="ayson" checked> Ayson</label>
+            </div>
+        </div>
+        <button class="sidebar-close-btn" aria-label="Cerrar filtros" title="Cerrar">
+            <i class="bi bi-x"></i>
+        </button>
+    </aside>
+
+    <div class="wrapper">
+        <main>
+            <h2 class="titulo-principal" id="titulo-principal">Todos los productos</h2>
+            <div id="contenedor-productos" class="contenedor-productos">
+                <!-- Esto se va a rellenar con código JS -->
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/main-productos-api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/filtros.js') }}" defer></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarCatalogo('bajos', 'bajo');
+            if (typeof inicializarFiltros === 'function') inicializarFiltros();
+        });
+    </script>
+{% endblock %}

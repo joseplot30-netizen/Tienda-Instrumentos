@@ -1,0 +1,241 @@
+/* mobile.css - Optimizaciones específicas para dispositivos móviles */
+
+/* Pequeños dispositivos: 320px - 480px */
+@media (max-width: 480px) {
+    html {
+        font-size: 14px;
+    }
+    
+    body {
+        padding-top: 70px;
+    }
+
+    * {
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Evitar zoom automático en inputs */
+    input,
+    textarea,
+    select {
+        font-size: 16px;
+    }
+
+    /* Optimizar imágenes */
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* Botones más grandes y fáciles de tocar */
+    button,
+    .btn,
+    a[role="button"] {
+        min-height: 44px;
+        min-width: 44px;
+        padding: clamp(10px, 2vw, 12px) clamp(12px, 3vw, 16px);
+    }
+
+    /* Espaciado vertical en listas */
+    li {
+        margin-bottom: 8px;
+    }
+
+    /* Forms más accesibles */
+    label {
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+}
+
+/* Dispositivos medianos: 481px - 768px */
+@media (min-width: 481px) and (max-width: 768px) {
+    html {
+        font-size: 15px;
+    }
+
+    * {
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.05);
+    }
+
+    input,
+    textarea,
+    select {
+        font-size: 16px;
+    }
+}
+
+/* Dispositivos grandes: 769px+ */
+@media (min-width: 769px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/* Orientación horizontal */
+@media (orientation: landscape) and (max-height: 500px) {
+    body {
+        padding-top: 60px;
+    }
+
+    .site-nav {
+        height: 60px;
+    }
+
+    :root {
+        --site-nav-height: 60px;
+    }
+}
+
+/* Optimizaciones para Retina displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Las imágenes SVG y de alta resolución ya se adaptan bien */
+    body {
+        background-size: cover;
+    }
+}
+
+/* Optimización para reducción de movimiento */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Optimización para modo oscuro */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #000;
+    }
+}
+
+/* Touch-friendly modifications */
+@media (hover: none) and (pointer: coarse) {
+    /* Dispositivos táctiles */
+    button:hover,
+    a:hover,
+    .filter-btn:hover,
+    .carrito-acciones-vaciar:hover,
+    .carrito-acciones-comprar:hover {
+        background-color: inherit;
+        transform: none;
+    }
+
+    button:active,
+    a:active,
+    .filter-btn:active,
+    .carrito-acciones-vaciar:active,
+    .carrito-acciones-comprar:active {
+        opacity: 0.7;
+        transform: scale(0.98);
+    }
+}
+
+/* Viewport lock y seguridad */
+html,
+body {
+    overscroll-behavior-y: contain;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+a,
+button,
+label,
+input,
+textarea {
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+/* Optimización de scroll suave */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Evitar layout shift con scrollbars */
+html {
+    overflow-y: scroll;
+}
+
+/* Optimización de imágenes para conexiones lentas */
+/* Note: Use loading="lazy" attribute in HTML instead of CSS */
+
+/* Estilos para navegación optimizada en móviles */
+.site-nav__list {
+    flex-wrap: wrap;
+}
+
+.site-nav__item {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+/* Botones del carrito más grandes */
+.carrito-producto-eliminar {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Sidebar con seguridad de borde */
+.sidebar {
+    contain: layout style paint;
+}
+
+/* Performance: GPU acceleration */
+.site-nav__overlay,
+.site-nav__drawer,
+.sidebar,
+.gallery,
+.contenedor-productos,
+.carrito-productos {
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Optimización de fuentes */
+body {
+    font-display: swap;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* Input padding y borders optimizados para móvil */
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
+}
+
+/* Evitar flashes de contenido sin estilo (FOUT) */
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Contenedores responsive seguros */
+.container,
+.wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+

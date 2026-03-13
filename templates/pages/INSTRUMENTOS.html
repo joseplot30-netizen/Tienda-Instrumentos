@@ -1,0 +1,43 @@
+
+{% extends "layout.html" %}
+
+{% block head %}
+    <title>INSTRUMENTOS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/style_instrumentos.css') }}?v=2">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+{% endblock %}
+
+{% block brand %}Instrumentos{% endblock %}
+
+{% block content %}
+<section>
+    <div class="gallery">
+        <a href="{{ url_for('bajos') }}" aria-label="Bajos">
+            <img src="{{ url_for('static', filename='img/bajo.jpg') }}" alt="Bajos" loading="lazy" decoding="async">
+        </a>
+
+        <a href="{{ url_for('otros') }}" aria-label="Otros Instrumentos">
+            <img src="{{ url_for('static', filename='img/otros.jpg') }}" alt="Otros Instrumentos" loading="lazy" decoding="async">
+        </a>
+
+        <a href="{{ url_for('guitarras') }}" aria-label="Guitarras">
+            <img src="{{ url_for('static', filename='img/guitarra.jpg') }}" alt="Guitarras" loading="lazy" decoding="async">
+        </a>
+
+        <a href="{{ url_for('baterias') }}" aria-label="Baterías">
+            <img src="{{ url_for('static', filename='img/bateria.jpg') }}" alt="Baterías" loading="lazy" decoding="async">
+        </a>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/main-productos-api.js') }}" defer></script>
+
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarCatalogo('bajos', 'bajo');
+        });
+    </script>
+{% endblock %}

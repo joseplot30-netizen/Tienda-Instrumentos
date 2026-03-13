@@ -1,0 +1,323 @@
+{% extends 'layout.html' %}
+
+{% block title %}Administración de Usuarios{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/style_admin.css') }}">
+<style>
+    .admin-search-section{
+        background: var(--card-bg);
+        border:1px solid rgba(255,255,255,0.06);
+        border-radius:12px;
+        padding:20px;
+        margin-bottom:25px;
+        display:flex;
+        flex-direction:column;
+        gap:12px;
+    }
+    
+    .search-controls{
+        display:flex;
+        gap:10px;
+        flex-wrap:wrap;
+        align-items:center;
+    }
+    
+    .search-input{
+        flex:1;
+        min-width:200px;
+        background:transparent;
+        border:1px solid rgba(255,255,255,0.12);
+        padding:10px 14px;
+        border-radius:8px;
+        color:#fff;
+        font-size:0.95rem;
+    }
+    
+    .search-input::placeholder{
+        color:rgba(255,255,255,0.4);
+    }
+    
+    .search-input:focus{
+        outline:2px solid rgba(255,204,0,0.3);
+        border-color:rgba(255,204,0,0.5);
+    }
+    
+    .filter-tabs{
+        display:flex;
+        gap:8px;
+        flex-wrap:wrap;
+    }
+    
+    .filter-btn{
+        background:transparent;
+        border:1px solid rgba(255,255,255,0.12);
+        color:#fff;
+        padding:8px 14px;
+        border-radius:6px;
+        cursor:pointer;
+        font-weight:600;
+        transition:all 0.2s;
+        font-size:0.9rem;
+    }
+    
+    .filter-btn:hover{
+        border-color:rgba(255,204,0,0.4);
+        background:rgba(255,204,0,0.08);
+    }
+    
+    .filter-btn.active{
+        background:var(--accent);
+        color:#000;
+        border-color:var(--accent);
+    }
+    
+    .users-grid{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:10px;
+    }
+    
+    .user-row{
+        background: var(--card-bg);
+        border:1px solid rgba(255,255,255,0.08);
+        border-radius:8px;
+        padding:14px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        transition:all 0.2s;
+    }
+    
+    .user-row:hover{
+        border-color:rgba(255,204,0,0.2);
+        background: rgba(255,204,0,0.02);
+    }
+    
+    .user-info{
+        flex:1;
+        min-width:0;
+    }
+    
+    .user-name{
+        font-weight:600;
+        color:#fff;
+        font-size:0.98rem;
+        margin-bottom:4px;
+    }
+    
+    .user-details{
+        display:flex;
+        gap:16px;
+        font-size:0.87rem;
+        color:var(--muted);
+        flex-wrap:wrap;
+    }
+    
+    .detail-item{
+        display:flex;
+        gap:4px;
+        align-items:center;
+    }
+    
+    .detail-label{
+        color:rgba(255,255,255,0.5);
+    }
+    
+    .detail-value{
+        color:var(--accent);
+        font-weight:600;
+    }
+    
+    .user-role{
+        padding:4px 10px;
+        border-radius:6px;
+        font-size:0.85rem;
+        font-weight:600;
+    }
+    
+    .role-admin{
+        background:rgba(100, 200, 255, 0.2);
+        color:#64c8ff;
+    }
+    
+    .role-user{
+        background:rgba(100, 255, 150, 0.2);
+        color:#9ff0b0;
+    }
+    
+    .user-actions{
+        display:flex;
+        gap:8px;
+        margin-left:12px;
+        flex-shrink:0;
+    }
+    
+    .no-results{
+        text-align:center;
+        padding:30px;
+        color:var(--muted);
+        font-size:0.95rem;
+    }
+    
+    @media (max-width:768px){
+        .search-controls{
+            flex-direction:column;
+            align-items:stretch;
+        }
+        
+        .search-input{
+            min-width:auto;
+        }
+        
+        .filter-tabs{
+            justify-content:flex-start;
+        }
+        
+        .user-row{
+            flex-direction:column;
+            align-items:flex-start;
+            gap:12px;
+        }
+        
+        .user-details{
+            width:100%;
+            flex-direction:column;
+            gap:8px;
+        }
+        
+        .user-actions{
+            width:100%;
+            margin-left:0;
+        }
+        
+        .btn{
+            flex:1;
+            text-align:center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>⚙️ Administración de Usuarios</h1>
+    
+    <p style="margin-bottom: 2rem; text-align: center;">
+        <a class="btn btn-primary" href="{{ url_for('admin_create_user') }}">+ Crear Usuario</a>
+    </p>
+    
+    {% if users %}
+    <div class="admin-search-section">
+        <div class="search-controls">
+            <input type="text" id="search-input" class="search-input" placeholder="🔍 Buscar por usuario, email o ID...">
+        </div>
+        <div class="filter-tabs">
+            <button class="filter-btn active" data-filter="all">Todos ({{ users|length }})</button>
+            {% set admin_count = users|selectattr('is_admin')|list|length %}
+            {% set user_count = users|rejectattr('is_admin')|list|length %}
+            <button class="filter-btn" data-filter="admin">👤 Administradores ({{ admin_count }})</button>
+            <button class="filter-btn" data-filter="user">👥 Usuarios ({{ user_count }})</button>
+        </div>
+    </div>
+
+    <div id="users-container"></div>
+
+    <script>
+        const allUsers = {{ users|tojson }};
+        let filteredUsers = allUsers;
+        let currentFilter = 'all';
+        let searchTerm = '';
+
+        function renderUsers(){
+            const container = document.getElementById('users-container');
+            container.innerHTML = '';
+            
+            filteredUsers.forEach(user => {
+                const row = document.createElement('div');
+                row.className = 'user-row';
+                
+                const roleClass = user.is_admin ? 'role-admin' : 'role-user';
+                const roleText = user.is_admin ? '✓ Administrador' : 'Usuario Regular';
+                
+                row.innerHTML = `
+                    <div class="user-info">
+                        <div class="user-name">ID #${user.id} - ${user.username}</div>
+                        <div class="user-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Email:</span>
+                                <span class="detail-value">${user.email}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="user-role ${roleClass}">${roleText}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <a class="btn btn-warning" href="/admin/users/edit/${user.id}">✏️ Editar</a>
+                        <form style="display:inline; flex:1;" method="post" action="/admin/users/delete/${user.id}" onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
+                            <button class="btn btn-danger" type="submit" style="width:100%;">🗑️ Eliminar</button>
+                        </form>
+                    </div>
+                `;
+                
+                container.appendChild(row);
+            });
+            
+            if(filteredUsers.length === 0){
+                const noResults = document.createElement('div');
+                noResults.className = 'no-results';
+                noResults.textContent = '❌ No se encontraron usuarios que coincidan con tu búsqueda';
+                container.appendChild(noResults);
+            }
+        }
+
+        function filterUsers(){
+            filteredUsers = allUsers.filter(u => {
+                // Filtro por rol
+                if(currentFilter === 'admin'){
+                    if(!u.is_admin) return false;
+                } else if(currentFilter === 'user'){
+                    if(u.is_admin) return false;
+                }
+                
+                // Filtro por búsqueda
+                if(searchTerm){
+                    const search = searchTerm.toLowerCase();
+                    const username = (u.username || '').toLowerCase();
+                    const email = (u.email || '').toLowerCase();
+                    const id = String(u.id);
+                    
+                    if(!username.includes(search) && !email.includes(search) && !id.includes(search)){
+                        return false;
+                    }
+                }
+                
+                return true;
+            });
+            renderUsers();
+        }
+
+        // Event listeners
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            filterUsers();
+        });
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                filterUsers();
+            });
+        });
+
+        // Render inicial
+        renderUsers();
+    </script>
+    {% else %}
+    <div class="alert alert-info">📭 No hay usuarios registrados aún.</div>
+    {% endif %}
+</div>
+{% endblock %}

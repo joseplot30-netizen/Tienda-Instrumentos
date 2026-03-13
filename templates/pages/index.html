@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/zzstyle0.css') }}?v=4">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+{% endblock %}
+{% block body_class %}show-old-menu{% endblock %}
+{% block brand %}Inicio{% endblock %}
+{% block nav %}
+<header class="top-header">
+    <h1 class="title">MUSIC STORE</h1>
+    <div class="menu-label-wrapper">
+        
+        <span class="menu-label">MENU</span>
+        <nav class="menu-dropdown" aria-hidden="true" role="navigation">
+            <ul>
+                <li><a href="{{ url_for('instrumentos') }}">INSTRUMENTOS</a></li>
+                <li><a href="{{ url_for('contacto') }}">CONTACTO</a></li>
+                <li><a href="{{ url_for('mas_sobre') }}">NOSOTROS</a></li>
+                
+                {% if not session.username %}
+                    <li><a href="{{ url_for('inicio_sesion') }}">INICIAR SESION</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('logout') }}">CERRAR SESIÓN</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</header>
+{% endblock %}
+{% block content %}{% endblock %}

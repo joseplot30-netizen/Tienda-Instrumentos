@@ -1,0 +1,488 @@
+# ARQUITECTURA - Estructura y Patrones del Sistema
+
+## 🏗️ Patrones de Arquitectura
+
+### Patrón MVC Adaptado
+
+Music Store implementa una arquitectura MVC ligera adaptada para Flask:
+
+```
+┌──────────────────────────────┐
+│   Views (Jinja2)        │  <- Plantillas HTML
+├──────────────────────────────┤
+│   Routes (Flask)        │  <- Controladores
+├──────────────────────────────┤
+│   Database (MySQL)      │  <- Modelos de datos
+└──────────────────────────────┘
+```
+
+---
+
+## 📄 Flujo de Datos
+
+### Solicitud HTTP
+
+```
+1. Cliente → Navegador web
+2. Navegador → Servidor Flask (puerto 3000)
+3. Flask → Enrutador (@app.route)
+4. Enrutador → Controlador (función Flask)
+5. Controlador → Base de Datos (MySQL)
+6. Base de Datos → Controlador (resultados)
+7. Controlador → Template Jinja2 (renderización)
+8. Jinja2 → HTML final
+9. HTML → Navegador
+10. Navegador → Cliente (renderizado)
+```
+
+### Flujo de Carrito (Cliente)
+
+```
+1. Usuario hace clic en producto
+2. JavaScript captura evento
+3. Carrito se actualiza en memoria (array)
+4. localStorage sincroniza datos
+5. Badge de cantidad se actualiza
+6. Confirmación visual en UI
+```
+
+---
+
+## 🛠️ Componentes Principales
+
+### 1. Capa de Aplicación (`app.py`)
+
+**Responsabilidades:**
+- Definir rutas HTTP
+- Gestionar sesiones
+- Renderizar templates
+- Conectar a base de datos
+
+**Funciones Clave:**
+```python
+@app.route(...)              # Decorador de rutas
+def admin_required(f)        # Middleware de autorización
+get_db_connection()          # Factory de conexiones DB
+```
+
+### 2. Capa de Vistas (`templates/`)
+
+**Estructura:**
+- `layout.html` - Template base heredado por todas las páginas
+- `pages/` - Páginas públicas (catálogo, carrito, etc)
+- `admin/` - Páginas administrativas (solo admins)
+
+**Características:**
+- Bloques Jinja2 para herencia
+- Condicionales `{% if %}` para lógica de vista
+- Loops `{% for %}` para iteración
+- Filtros `|` para transformación de datos
+
+### 3. Capa de Estilos (`static/css/`)
+
+**Organización:**
+```
+css/
+├── base/              # Estilos globales
+│   ├── centering      # Utilidades de layout
+│   ├── mobile         # Mobile-first
+│   └── zzstyle0       # Estilos principales
+├── components/        # Componentes específicos
+│   ├── style_admin    # Panel administrativo
+│   ├── carrito        # Carrito de compras
+│   ├── instrumentos   # Catálogo
+│   └── ...
+└── layout/            # Componentes de layout
+    ├── nav_menu       # Navegación
+    ├── sidebar_menu   # Filtros
+    └── hamburguesa    # Menú móvil
+```
+
+**Metodología:** Mobile-first con media queries
+
+### 4. Capa de Lógica Cliente (`static/js/`)
+
+**Módulos:**
+
+| Archivo | Responsabilidad |
+|---------|-----------------|
+| `ui.js` | Menú hamburguesa, toggle de filtros |
+| `main-productos-api.js` | Llamadas AJAX a productos |
+| `filtros.js` | Filtrado reactivo de productos |
+| `carrito.js` | Gestión del carrito |
+| `sincronizar_carrito.js` | Persistencia en localStorage |
+| `contacto.js` | Validación de formulario |
+| `fix_scroll.js` | Correcciones de scroll |
+
+### 5. Base de Datos (`MySQL/bd_users`)
+
+**Tablas:**
+
+#### Tabla `users`
+Almacena información de usuarios registrados.
+```
+Campos: id, username, email, password, is_admin, created_at
+Índices: PRIMARY KEY (id), UNIQUE (username), UNIQUE (email)
+```
+
+#### Tabla `products`
+Catálogo de instrumentos disponibles.
+```
+Campos: id, name, price, stock, category, brand, image_url, created_at
+Índices: PRIMARY KEY (id), INDEX (category), INDEX (brand)
+```
+
+#### Tabla `contacts`
+Mensajes de contacto del público.
+```
+Campos: id, name, email, message, created_at
+Índices: PRIMARY KEY (id)
+```
+
+---
+
+## 🔐 Flujo de Autenticación
+
+### Registro (Sign Up)
+
+```
+1. Usuario navega a /registro
+2. Completa formulario (username, email, password)
+3. JavaScript valida datos cliente
+4. POST a /registro
+5. Flask valida:
+   - Campos no vacíos
+   - Passwords coinciden
+   - Username único
+   - Email único
+6. Si válido: INSERT en tabla users
+7. Redirige a /inicio_sesion
+8. Si inválido: Flash error y recarga formulario
+```
+
+### Inicio de Sesión (Login)
+
+```
+1. Usuario navega a /inicio_sesion
+2. Ingresa username y password
+3. POST a /inicio_sesion
+4. Flask busca usuario en BD
+5. Si existe y password correcto:
+   - Guarda datos en session
+   - Sets session['is_admin']
+   - Flash bienvenida
+   - Redirige a inicio
+6. Si no: Flash error
+```
+
+### Protección de Rutas
+
+```
+@admin_required              # Decorador personalizado
+└─> Verifica session['is_admin']
+    ├─ Si no autenticado → /inicio_sesion
+    └─ Si no admin → /
+```
+
+---
+
+## 🎨 Sistema de Componentes UI
+
+### Menú de Hamburguesa
+
+**Archivo**: `static/js/ui.js`
+
+**Elementos HTML**:
+```html
+<button class="site-nav__hamburger">☰</button>
+<div class="site-nav__overlay">
+  <ul class="site-nav__list">
+    <!-- Items de menú -->
+  </ul>
+  <button class="site-nav__close">✕</button>
+</div>
+```
+
+**Eventos JavaScript**:
+```
+click hamburger → toggle overlay
+click overlay → close overlay
+click X → close overlay
+```
+
+### Filtros de Productos
+
+**Archivo**: `static/js/ui.js`, `filtros.js`
+
+**Elementos HTML**:
+```html
+<aside class="sidebar closed">
+  <button class="sidebar-toggle">🎚</button>
+  <div class="sidebar-section">
+    <!-- Filtros por precio, marca, etc -->
+  </div>
+  <button class="sidebar-close-btn">✕</button>
+</aside>
+```
+
+**Estados**:
+- `closed` - Sidebar colapsado
+- `visible` - Overlay visible
+- `hidden` - Botón toggle oculto
+
+**Flujo Interactivo**:
+```
+click toggle → sidebar.toggle('closed')
+           → toggle.toggle('hidden')
+           → overlay.toggle('visible')
+click close → sidebar.add('closed')
+           → toggle.remove('hidden')
+           → overlay.remove('visible')
+click outside → cerrar automáticamente
+```
+
+---
+
+## 📊 Panel Administrativo
+
+### Flujo de Gestión de Productos
+
+```
+Admin abre /admin/products
+    ↓
+Lista todos los productos
+    ↓
+Busca/Filtra en tiempo real (JavaScript)
+    ↓
+Click en producto → /admin/products/edit/<id>
+    ↓
+Carga formulario con datos actuales
+    ↓
+Editar validar → POST
+    ↓
+UPDATE en BD
+    ↓
+Flash de éxito
+    ↓
+Redirige a /admin/products
+```
+
+### Flujo de Gestión de Usuarios
+
+Idéntico al anterior pero con rutas:
+- `/admin/users`
+- `/admin/users/edit/<id>`
+- `/admin/users/delete/<id>`
+
+---
+
+## 📄 Ciclo de Vida de una Solicitud
+
+### GET a Ruta Pública
+
+```python
+@app.route('/guitarras')
+def guitarras():
+    # 1. Conectar a BD
+    conn = get_db_connection()
+    
+    # 2. Ejecutar query
+    cursor.execute("SELECT * FROM products WHERE category='guitarras'")
+    
+    # 3. Recuperar resultados
+    products = cursor.fetchall()
+    
+    # 4. Renderizar template
+    return render_template('pages/guitarras.html', products=products)
+    
+    # 5. Browser recibe HTML
+    # 6. Ejecuta JavaScript (carrito, filtros)
+    # 7. Usuario ve página
+```
+
+### POST a Ruta Protegida
+
+```python
+@app.route('/admin/products', methods=['POST'])
+@admin_required  # Verifica autenticación
+def create_product():
+    # 1. Obtener datos del formulario
+    name = request.form.get('name')
+    price = request.form.get('price')
+    
+    # 2. Validar datos
+    if not name or not price:
+        flash('Campos incompletos', 'error')
+        return redirect(url_for('admin_products'))
+    
+    # 3. Conectar a BD
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    # 4. Ejecutar INSERT
+    cursor.execute("""
+        INSERT INTO products (name, price, ...)
+        VALUES (%s, %s, ...)
+    """, (name, price, ...))
+    
+    # 5. Confirmar transacción
+    conn.commit()
+    
+    # 6. Feedback al usuario
+    flash('Producto creado', 'success')
+    
+    # 7. Redirigir
+    return redirect(url_for('admin_products'))
+```
+
+---
+
+## 🎯 Decisiones de Diseño
+
+### 1. localStorage vs Session Server
+
+**Carrito**: localStorage (cliente)
+- **Razón**: No requiere persistencia en BD
+- **Ventaja**: Funciona sin conexión
+- **Riesgo**: Se pierden si borra caché
+
+### 2. Prepared Statements
+
+**Implementado**: `%s` placeholders con tuple
+```python
+cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
+```
+- **Ventaja**: Protección contra SQL injection
+- **Equivalente**: Seguro como ORM
+
+### 3. Sesiones Flask
+
+**Implementado**: `session` dict nativo de Flask
+```python
+session['user_id'] = user['id']
+```
+- **Almacenamiento**: Cookie firmada
+- **Ventaja**: Simple, secure, HTTP-only
+
+### 4. CSS Grid + Flexbox
+
+**Responsividad**: Media queries 3 breakpoints
+- Móvil 480px: Stack vertical
+- Tablet 768px: Layout intermedio
+- Desktop 1024px+: Full width
+
+---
+
+## 🚦 Estados y Transiciones
+
+### Usuario
+
+```
+┌──────────────┐      registro      ┌──────────────────┐
+│Anónimo       │────────────────────→  Registrado    │
+└─────┬────────┘                    └────┬───────────┘
+      │                                 │
+      └─────────────── login ─────────────┘
+               │
+        ┌──────▼───────────────┐
+        │   Autenticado        │
+        └─────┬────────┬───────┘
+              │        │
+      ┌───────▼─┐   ┌─▼─────────┐
+      │ Usuario  │   │ Admin    │
+      └───────┬──┘   └─┬───────┘
+              │ logout │
+              └────┬───┘
+         ┌──────────▼──────────┐
+         │   Anónimo           │
+         └─────────────────────┘
+```
+
+---
+
+## 📈 Consideraciones de Performance
+
+### Optimizaciones Implementadas
+
+1. **CSS**: Media queries optimizadas
+2. **JS**: Event delegation en menús
+3. **HTML**: Template caching (Jinja2)
+4. **DB**: Consultas indexed
+
+### Próximas Optimizaciones
+
+1. **Caché**: Redis para productos frecuentes
+2. **CDN**: Imágenes en CDN externo
+3. **Compresión**: Gzip en respuestas
+4. **Minificación**: JS/CSS minificados
+
+---
+
+## 📌 Convenciones de Código
+
+### Python/Flask
+
+- Nombres de funciones: `snake_case`
+- Nombres de clases: `CamelCase`
+- Constantes: `UPPER_SNAKE_CASE`
+- Prefijo privado: `_private_function()`
+
+### HTML/Templates
+
+- Data attributes: `data-filter="value"`
+- Clases CSS: `kebab-case`
+- IDs: `kebab-case` (para JS)
+
+### CSS
+
+- Variables: `--variable-name`
+- Clases: `component__element--modifier` (BEM style)
+- Mobile-first breakpoints
+
+### JavaScript
+
+- Const/let preferido sobre var
+- Arrow functions para callbacks
+- Event listeners delegados
+- Nombres descriptivos
+
+---
+
+## 🔗 Integración de Componentes
+
+### Cómo funciona el carrito
+
+1. **Usuario hace click en "Comprar"**
+   - JavaScript captura evento
+   - Crea objeto: `{id, nombre, precio, cantidad}`
+
+2. **Se añade al array local**
+   - `carrito.push(producto)`
+
+3. **Se sincroniza con localStorage**
+   - `localStorage.setItem('carrito', JSON.stringify(carrito))`
+
+4. **Se actualiza badge**
+   - `.cart-badge` muestra cantidad
+
+5. **Al recargar página**
+   - `localStorage.getItem('carrito')`
+   - Se restaura estado del carrito
+
+### Cómo funciona la búsqueda de admin
+
+1. **Usuario escribe en input**
+   - JavaScript captura eventos `input`
+
+2. **Se filtra array en memoria**
+   - Compara con: nombre, marca, ID
+
+3. **Se renderiza resultado**
+   - DOM se actualiza reactivamente
+
+4. **Sin recarga de página**
+   - Todo ocurre en cliente
+
+---
+
+**Documento mantenido**: 12 de marzo de 2026

@@ -1,0 +1,126 @@
+:root {
+    --transition: 0.3s ease;
+    --border-radius: 12px;
+    --color-text: #ffffff;
+    --color-primary: #dc0808;
+    --color-secondary: #cf1616;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #000000;
+    background-image: url('/static/img/22.jpg');
+    background-repeat: repeat;
+    background-position: 10%;
+    background-attachment: fixed;
+    color: var(--color-text);
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    gap: 2rem;
+    width: 100%;
+}
+
+section h3 {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    text-align: center;
+    margin: 0;
+    max-width: 600px;
+}
+
+section h2 {
+    font-size: 2.5rem;
+    color: var(--color-text);
+    text-align: center;
+    margin: 0;
+}
+
+section img {
+    max-width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    transition: all var(--transition);
+    object-fit: cover;
+}
+
+section img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(220, 8, 8, 0.4);
+}
+
+/* RESPONSIVE */
+@media (max-width: 767px) {
+    section {
+        padding: 2rem 1rem;
+        margin-top: 60px;
+    }
+
+    section h2 {
+        font-size: 1.8rem;
+    }
+
+    section h3 {
+        font-size: 1.1rem;
+    }
+
+    section img {
+        max-width: 80px;
+        height: 80px;
+    }
+}
+
+@media (min-width: 768px) {
+    section {
+        padding: 3rem 2rem;
+        margin-top: 80px;
+    }
+}
+
+    section h2 {
+        font-size: 2.2rem;
+    }
+
+    section h3 {
+        font-size: 1.4rem;
+    }
+
+    section img {
+        max-width: 80%;
+    }
+
+
+@media (min-width: 1025px) {
+    section {
+        padding: 3rem 2rem;
+        min-height: 60vh;
+    }
+
+    section h2 {
+        font-size: 2.8rem;
+    }
+
+    section h3 {
+        font-size: 1.6rem;
+    }
+
+    section img {
+        max-width: 70%;
+    }
+    nav{
+        position: relative;
+        top:-10vh;
+    }
+}

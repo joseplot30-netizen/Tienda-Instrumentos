@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Music Store">
+    <meta name="description" content="Music Store - Tienda de instrumentos musicales, venta online, guitarras, bajos, baterías, accesorios y más. Envío rápido y soporte al cliente.">
+    <meta name="keywords" content="instrumentos musicales, tienda de música, guitarras eléctricas, bajos, baterías, percusión, accesorios musicales, partituras, amplificadores, teclados, violines, compra instrumentos, venta instrumentos, música rock, jazz, clásico, sonido profesional, envío rápido, precios bajos, ofertas música, instrumentos para principiantes, lecciones de música, instrumentos infantiles, equipo de audio">
+    <meta name="robots" content="index, follow">
+
+
+
+    <title>{% block title %}Music Store{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/centering.css') }}?v=4">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout/nav_menu.css') }}?v=4">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout/sidebar_menu.css') }}?v=4">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout/hamburguesa_overrides.css') }}?v=4">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/zzstyle0.css') }}?v=4">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/pages.css') }}?v=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/mobile.css') }}?v=1">
+
+    {% block head %}{% endblock %}
+</head>
+
+<body {% block body_attrs %}{% endblock %} class="{% block body_class %}{% endblock %}">
+
+{% block nav %}
+    <nav class="site-nav" role="navigation" aria-label="Menú principal">
+        <div class="site-nav__container">
+            <button class="site-nav__hamburger" aria-label="Abrir menú">☰</button>
+            <div class="site-nav__panel">
+                <ul class="site-nav__list">
+                    <li class="site-nav__item"><a href="{{ url_for('index') }}">Inicio</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('instrumentos') }}">Instrumentos</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('contacto') }}">Contacto</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('mas_sobre') }}">Nosotros</a></li>
+                    
+                    {% if not session.username %}
+                        <li class="site-nav__item"><a href="{{ url_for('crear_cuenta') }}">Crear cuenta</a></li>
+                        <li class="site-nav__item"><a href="{{ url_for('inicio_sesion') }}">Iniciar sesión</a></li>
+                    {% endif %}
+
+                    {% if session.username %}
+                        {% if session.role == 'admin' %}
+                            <li class="site-nav__item"><a href="{{ url_for('admin_users') }}">Panel usuarios</a></li>
+                            <li class="site-nav__item"><a href="{{ url_for('admin_products') }}">Panel productos</a></li>
+                        {% else %}
+                            <li class="site-nav__item">
+                                <a href="{{ url_for('carrito') }}" class="cart-link">
+                                    <i class="bi bi-cart-fill"></i>
+                                    <span id="numerito" class="cart-badge">{{ cart_count | default(0) }}</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="site-nav__item"><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+                    {% else %}
+                        <li class="site-nav__item">
+                            <a href="{{ url_for('carrito') }}" class="cart-link">
+                                <i class="bi bi-cart-fill"></i>
+                                <span id="numerito" class="cart-badge">{{ cart_count | default(0) }}</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <div class="site-nav__overlay">
+            <div class="site-nav__drawer">
+                <button class="site-nav__close" aria-label="Cerrar menú">×</button>
+                <ul class="site-nav__list">
+                    <li class="site-nav__item"><a href="{{ url_for('index') }}">Inicio</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('instrumentos') }}">Instrumentos</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('contacto') }}">Contacto</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('mas_sobre') }}">Nosotros</a></li>
+                    
+                    {% if not session.username %}
+                        <li class="site-nav__item"><a href="{{ url_for('crear_cuenta') }}">Crear cuenta</a></li>
+                        <li class="site-nav__item"><a href="{{ url_for('inicio_sesion') }}">Iniciar sesión</a></li>
+                    {% endif %}
+
+                    {% if session.username %}
+                        {% if session.role == 'admin' %}
+                            <li class="site-nav__item"><a href="{{ url_for('admin_users') }}">Panel usuarios</a></li>
+                            <li class="site-nav__item"><a href="{{ url_for('admin_products') }}">Panel productos</a></li>
+                        {% else %}
+                            <li class="site-nav__item">
+                                <a href="{{ url_for('carrito') }}" class="cart-link">
+                                    <i class="bi bi-cart-fill"></i>
+                                    <span id="numerito-drawer" class="cart-badge">{{ cart_count | default(0) }}</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="site-nav__item"><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+                    {% else %}
+                        <li class="site-nav__item">
+                            <a href="{{ url_for('carrito') }}" class="cart-link">
+                                <i class="bi bi-cart-fill"></i>
+                                <span id="numerito-drawer" class="cart-badge">{{ cart_count | default(0) }}</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+
+    <!-- Mensaje de bienvenida (no mostrar en la página de inicio) -->
+    {% if session.username and request.endpoint != 'index' %}
+    <div class="welcome-message" style="margin: 1rem auto; max-width: 1200px;">
+        ¡Bienvenido/a <strong>{{ session.username }}</strong>! {% if session.role == 'admin' %}<span style="color: #000000;">(Administrador)</span>{% endif %}
+    </div>
+    {% endif %}
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <div id="anuncio-carrito" class="anuncio oculto">
+        <div class="anuncio-contenido">
+            <p>Agregado al carrito</p>
+            <div class="anuncio-botones">
+                <button id="ir-carrito">Ir al carrito</button>
+                <button id="seguir-comprando">Seguir comprando</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/fix_scroll.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sincronizar_carrito.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ui.js') }}" defer></script>
+
+    <div id="flask-messages" style="display: none;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        <span class="msg" data-category="{{ category }}" data-text="{{ message }}"></span>
+        {% endfor %}
+        {% endwith %}
+    </div>
+
+    {% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 1. Buscamos los mensajes ocultos en el HTML
+            const messageElements = document.querySelectorAll('#flask-messages .msg');
+
+            messageElements.forEach(el => {
+                const categoria = el.getAttribute('data-category');
+                const mensaje = el.getAttribute('data-text');
+
+                // Mapeo de categorías a iconos
+                const iconMap = {
+                    'success': 'success',
+                    'danger': 'error',
+                    'warning': 'warning',
+                    'info': 'info'
+                };
+
+                const icon = iconMap[categoria] || 'info';
+                const titles = {
+                    'success': '¡Éxito!',
+                    'danger': 'Error',
+                    'warning': 'Advertencia',
+                    'info': 'Información'
+                };
+
+                // Si es éxito, lanzamos confeti
+                if (categoria === 'success') {
+                    confetti({
+                        particleCount: 150,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors: ['#000000', '#ffcc00', '#ffffff']
+                    });
+                }
+
+                // Lanzamos SweetAlert2
+                Swal.fire({
+                    title: titles[categoria] || 'Información',
+                    text: mensaje,
+                    icon: icon,
+                    confirmButtonColor: '#1a08dcae',
+                    confirmButtonText: 'Entendido',
+                    backdrop: 'rgba(0, 0, 0, 0.9)',
+                    background: 'rgba(0, 0, 0, 0.8)',
+                    color: '#ffffff'
+                });
+            });
+        });
+    </script>
+    {% endblock %}
+
+</body>
+
+</html>

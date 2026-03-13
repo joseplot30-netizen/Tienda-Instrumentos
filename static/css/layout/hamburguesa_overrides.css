@@ -1,0 +1,122 @@
+/* hamburguesa_overrides.css - Overrides y centrado global */
+
+/* === CENTRADO GLOBAL === */
+
+/* Asegurar que container está centrado */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Main centrado */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Secciones centradas */
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Imágenes fluidas */
+img, .gallery img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+}
+
+/* === PARA PÁGINA INDEX === */
+
+body.show-old-menu header.top-header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 1500 !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+}
+
+body.show-old-menu header.top-header .container {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: clamp(6px, 1.5vw, 8px) !important;
+}
+
+/* Marca con efecto brilloso en index */
+body.show-old-menu .btn-shine {
+    position: static !important;
+    display: block !important;
+    text-align: center !important;
+    margin: 0 auto !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    padding: clamp(6px, 1.5vw, 8px) 0 !important;
+}
+
+body.show-old-menu .btn-shine span {
+    color: #fafafa !important;
+    font-weight: 700 !important;
+    font-size: clamp(1.5rem, 6vw, 2.8rem) !important;
+    font-family: 'Poppins', 'Segoe UI', sans-serif !important;
+    letter-spacing: clamp(1px, 1.5vw, 2px) !important;
+    text-shadow: clamp(2px, 1vw, 2px) clamp(2px, 1vw, 2px) clamp(6px, 2vw, 8px) rgba(0, 0, 0, 0.4) !important;
+    display: inline-block !important;
+    transition: all 0.3s ease !important;
+    word-wrap: break-word;
+    max-width: 90vw;
+}
+
+body.show-old-menu .btn-shine span:hover {
+    color: #fff !important;
+    text-shadow: clamp(2px, 1.5vw, 3px) clamp(2px, 1.5vw, 3px) clamp(10px, 2.5vw, 12px) rgba(0, 0, 0, 0.6) !important;
+    transform: scale(1.05) !important;
+}
+
+body.show-old-menu .btn-shine span:active {
+    transform: scale(0.98) !important;
+}
+
+/* Padding para el contenido debajo del header fijo en index */
+body.show-old-menu {
+    padding-top: clamp(70px, 15vw, 80px) !important;
+}
+
+/* Responsive para index */
+@media (max-width: 480px) {
+    body.show-old-menu header.top-header {
+        padding: clamp(8px, 2vw, 12px) !important;
+    }
+    
+    body.show-old-menu .btn-shine span {
+        letter-spacing: 0px !important;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+    body.show-old-menu {
+        padding-top: 60px !important;
+    }
+}
