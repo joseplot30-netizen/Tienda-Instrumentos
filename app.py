@@ -17,9 +17,7 @@ def get_db_connection():
         ssl_verify_identity=False,
         use_pure=True
     )
-def get_db_connection():
-    return mysql.connector.connect(**db_config)
-
+    
 def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -481,6 +479,3 @@ def admin_nosotros():
         flash('Información actualizada', 'success')
         return redirect(url_for('mas_sobre'))
     return render_template('admin/admin_nosotros.html')
-
-if __name__ == '__main__':
-    app.run(debug=True, port=3000)
