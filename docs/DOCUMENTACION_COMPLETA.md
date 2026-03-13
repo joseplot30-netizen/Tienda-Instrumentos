@@ -249,6 +249,10 @@ Configurar en Render:
 - Aiven ofrece SSL obligatorio; usar el certificado que provea Aiven en la configuración de MySQL Workbench.
 - Usar `https://` en la aplicación desplegada.
 
+### 6.6. Sitemap
+
+La aplicación expone un sitemap dinámico en `/sitemap.xml` que incluye las rutas públicas principales. Esto ayuda a los motores de búsqueda a indexar el sitio correctamente.
+
 ---
 
 ## 7. Seguridad y buenas prácticas
