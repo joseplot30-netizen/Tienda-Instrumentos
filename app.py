@@ -4,20 +4,15 @@ from functools import wraps
 import mysql.connector
 import os
 
-app = Flask(__name__)
-app.secret_key = "TiendaMusical" # Cambia 'key_gen' por algo largo
-
 def get_db_connection():
-
     return mysql.connector.connect(
-        host=os.getenv('DB_HOST'),      
-        port=os.getenv('DB_PORT'),      
-        user=os.getenv('DB_USER'),     
-        password=os.getenv('DB_PASSWORD'), 
-        database=os.getenv('DB_NAME'),  
+        host=os.getenv('DB_HOST'),
+        port=os.getenv('DB_PORT'),
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD'),
+        database=os.getenv('DB_NAME'),
         ssl_ca='/etc/secrets/ca.pem',
-        ssl_cert='/etc/secrets/service.cert',
-        ssl_key='/etc/secrets/service.key'
+        ssl_verify_cert=True
     )
 
 def get_db_connection():
