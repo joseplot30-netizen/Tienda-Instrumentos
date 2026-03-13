@@ -4,6 +4,8 @@ from functools import wraps
 import mysql.connector
 import os
 
+app.secret_key = os.getenv('SECRET_KEY', 'Tienda-Musica')
+
 def get_db_connection():
     return mysql.connector.connect(
         host=os.getenv('DB_HOST'),
