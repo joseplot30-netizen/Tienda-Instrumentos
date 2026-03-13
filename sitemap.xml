@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://localhost:3000/</loc>
+    <loc>https://tu-dominio.com/</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/inicio_sesion</loc>
+    <loc>https://tu-dominio.com/inicio_sesion</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/crear-cuenta</loc>
+    <loc>https://tu-dominio.com/crear-cuenta</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/instrumentos</loc>
+    <loc>https://tu-dominio.com/instrumentos</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/bajos</loc>
+    <loc>https://tu-dominio.com/bajos</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/baterias</loc>
+    <loc>https://tu-dominio.com/baterias</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/guitarras</loc>
+    <loc>https://tu-dominio.com/guitarras</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/otros</loc>
+    <loc>https://tu-dominio.com/otros</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/carrito</loc>
+    <loc>https://tu-dominio.com/carrito</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/contacto</loc>
+    <loc>https://tu-dominio.com/contacto</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/mas_sobre</loc>
+    <loc>https://tu-dominio.com/mas_sobre</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/logout</loc>
+    <loc>https://tu-dominio.com/logout</loc>
   </url>
-</urlset></content>
+</urlset>
 <parameter name="filePath">c:\Users\User\Downloads\python_proyecto\proyecto_python\sitemap.xml
