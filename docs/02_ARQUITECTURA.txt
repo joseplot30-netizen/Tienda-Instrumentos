@@ -1,4 +1,4 @@
-# ARQUITECTURA - Estructura y Patrones del Sistema
+# Arquitectura
 
 ## 🏗️ Patrones de Arquitectura
 
@@ -53,12 +53,14 @@ Music Store implementa una arquitectura MVC ligera adaptada para Flask:
 ### 1. Capa de Aplicación (`app.py`)
 
 **Responsabilidades:**
+
 - Definir rutas HTTP
 - Gestionar sesiones
 - Renderizar templates
 - Conectar a base de datos
 
 **Funciones Clave:**
+
 ```python
 @app.route(...)              # Decorador de rutas
 def admin_required(f)        # Middleware de autorización
@@ -68,11 +70,13 @@ get_db_connection()          # Factory de conexiones DB
 ### 2. Capa de Vistas (`templates/`)
 
 **Estructura:**
+
 - `layout.html` - Template base heredado por todas las páginas
 - `pages/` - Páginas públicas (catálogo, carrito, etc)
 - `admin/` - Páginas administrativas (solo admins)
 
 **Características:**
+
 - Bloques Jinja2 para herencia
 - Condicionales `{% if %}` para lógica de vista
 - Loops `{% for %}` para iteración
@@ -81,6 +85,7 @@ get_db_connection()          # Factory de conexiones DB
 ### 3. Capa de Estilos (`static/css/`)
 
 **Organización:**
+
 ```
 css/
 ├── base/              # Estilos globales
@@ -120,6 +125,7 @@ css/
 
 #### Tabla `users`
 Almacena información de usuarios registrados.
+
 ```
 Campos: id, username, email, password, is_admin, created_at
 Índices: PRIMARY KEY (id), UNIQUE (username), UNIQUE (email)
@@ -127,6 +133,7 @@ Campos: id, username, email, password, is_admin, created_at
 
 #### Tabla `products`
 Catálogo de instrumentos disponibles.
+
 ```
 Campos: id, name, price, stock, category, brand, image_url, created_at
 Índices: PRIMARY KEY (id), INDEX (category), INDEX (brand)
@@ -134,6 +141,7 @@ Campos: id, name, price, stock, category, brand, image_url, created_at
 
 #### Tabla `contacts`
 Mensajes de contacto del público.
+
 ```
 Campos: id, name, email, message, created_at
 Índices: PRIMARY KEY (id)
@@ -146,10 +154,10 @@ Campos: id, name, email, message, created_at
 ### Registro (Sign Up)
 
 ```
-1. Usuario navega a /registro
+1. Usuario navega a /crear-cuenta
 2. Completa formulario (username, email, password)
 3. JavaScript valida datos cliente
-4. POST a /registro
+4. POST a /crear-cuenta
 5. Flask valida:
    - Campos no vacíos
    - Passwords coinciden
@@ -192,7 +200,8 @@ Campos: id, name, email, message, created_at
 
 **Archivo**: `static/js/ui.js`
 
-**Elementos HTML**:
+**Elemento HTML**:
+
 ```html
 <button class="site-nav__hamburger">☰</button>
 <div class="site-nav__overlay">
@@ -215,6 +224,7 @@ click X → close overlay
 **Archivo**: `static/js/ui.js`, `filtros.js`
 
 **Elementos HTML**:
+
 ```html
 <aside class="sidebar closed">
   <button class="sidebar-toggle">🎚</button>
@@ -247,242 +257,4 @@ click outside → cerrar automáticamente
 
 ### Flujo de Gestión de Productos
 
-```
-Admin abre /admin/products
-    ↓
-Lista todos los productos
-    ↓
-Busca/Filtra en tiempo real (JavaScript)
-    ↓
-Click en producto → /admin/products/edit/<id>
-    ↓
-Carga formulario con datos actuales
-    ↓
-Editar validar → POST
-    ↓
-UPDATE en BD
-    ↓
-Flash de éxito
-    ↓
-Redirige a /admin/products
-```
-
-### Flujo de Gestión de Usuarios
-
-Idéntico al anterior pero con rutas:
-- `/admin/users`
-- `/admin/users/edit/<id>`
-- `/admin/users/delete/<id>`
-
----
-
-## 📄 Ciclo de Vida de una Solicitud
-
-### GET a Ruta Pública
-
-```python
-@app.route('/guitarras')
-def guitarras():
-    # 1. Conectar a BD
-    conn = get_db_connection()
-    
-    # 2. Ejecutar query
-    cursor.execute("SELECT * FROM products WHERE category='guitarras'")
-    
-    # 3. Recuperar resultados
-    products = cursor.fetchall()
-    
-    # 4. Renderizar template
-    return render_template('pages/guitarras.html', products=products)
-    
-    # 5. Browser recibe HTML
-    # 6. Ejecuta JavaScript (carrito, filtros)
-    # 7. Usuario ve página
-```
-
-### POST a Ruta Protegida
-
-```python
-@app.route('/admin/products', methods=['POST'])
-@admin_required  # Verifica autenticación
-def create_product():
-    # 1. Obtener datos del formulario
-    name = request.form.get('name')
-    price = request.form.get('price')
-    
-    # 2. Validar datos
-    if not name or not price:
-        flash('Campos incompletos', 'error')
-        return redirect(url_for('admin_products'))
-    
-    # 3. Conectar a BD
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    
-    # 4. Ejecutar INSERT
-    cursor.execute("""
-        INSERT INTO products (name, price, ...)
-        VALUES (%s, %s, ...)
-    """, (name, price, ...))
-    
-    # 5. Confirmar transacción
-    conn.commit()
-    
-    # 6. Feedback al usuario
-    flash('Producto creado', 'success')
-    
-    # 7. Redirigir
-    return redirect(url_for('admin_products'))
-```
-
----
-
-## 🎯 Decisiones de Diseño
-
-### 1. localStorage vs Session Server
-
-**Carrito**: localStorage (cliente)
-- **Razón**: No requiere persistencia en BD
-- **Ventaja**: Funciona sin conexión
-- **Riesgo**: Se pierden si borra caché
-
-### 2. Prepared Statements
-
-**Implementado**: `%s` placeholders con tuple
-```python
-cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
-```
-- **Ventaja**: Protección contra SQL injection
-- **Equivalente**: Seguro como ORM
-
-### 3. Sesiones Flask
-
-**Implementado**: `session` dict nativo de Flask
-```python
-session['user_id'] = user['id']
-```
-- **Almacenamiento**: Cookie firmada
-- **Ventaja**: Simple, secure, HTTP-only
-
-### 4. CSS Grid + Flexbox
-
-**Responsividad**: Media queries 3 breakpoints
-- Móvil 480px: Stack vertical
-- Tablet 768px: Layout intermedio
-- Desktop 1024px+: Full width
-
----
-
-## 🚦 Estados y Transiciones
-
-### Usuario
-
-```
-┌──────────────┐      registro      ┌──────────────────┐
-│Anónimo       │────────────────────→  Registrado    │
-└─────┬────────┘                    └────┬───────────┘
-      │                                 │
-      └─────────────── login ─────────────┘
-               │
-        ┌──────▼───────────────┐
-        │   Autenticado        │
-        └─────┬────────┬───────┘
-              │        │
-      ┌───────▼─┐   ┌─▼─────────┐
-      │ Usuario  │   │ Admin    │
-      └───────┬──┘   └─┬───────┘
-              │ logout │
-              └────┬───┘
-         ┌──────────▼──────────┐
-         │   Anónimo           │
-         └─────────────────────┘
-```
-
----
-
-## 📈 Consideraciones de Performance
-
-### Optimizaciones Implementadas
-
-1. **CSS**: Media queries optimizadas
-2. **JS**: Event delegation en menús
-3. **HTML**: Template caching (Jinja2)
-4. **DB**: Consultas indexed
-
-### Próximas Optimizaciones
-
-1. **Caché**: Redis para productos frecuentes
-2. **CDN**: Imágenes en CDN externo
-3. **Compresión**: Gzip en respuestas
-4. **Minificación**: JS/CSS minificados
-
----
-
-## 📌 Convenciones de Código
-
-### Python/Flask
-
-- Nombres de funciones: `snake_case`
-- Nombres de clases: `CamelCase`
-- Constantes: `UPPER_SNAKE_CASE`
-- Prefijo privado: `_private_function()`
-
-### HTML/Templates
-
-- Data attributes: `data-filter="value"`
-- Clases CSS: `kebab-case`
-- IDs: `kebab-case` (para JS)
-
-### CSS
-
-- Variables: `--variable-name`
-- Clases: `component__element--modifier` (BEM style)
-- Mobile-first breakpoints
-
-### JavaScript
-
-- Const/let preferido sobre var
-- Arrow functions para callbacks
-- Event listeners delegados
-- Nombres descriptivos
-
----
-
-## 🔗 Integración de Componentes
-
-### Cómo funciona el carrito
-
-1. **Usuario hace click en "Comprar"**
-   - JavaScript captura evento
-   - Crea objeto: `{id, nombre, precio, cantidad}`
-
-2. **Se añade al array local**
-   - `carrito.push(producto)`
-
-3. **Se sincroniza con localStorage**
-   - `localStorage.setItem('carrito', JSON.stringify(carrito))`
-
-4. **Se actualiza badge**
-   - `.cart-badge` muestra cantidad
-
-5. **Al recargar página**
-   - `localStorage.getItem('carrito')`
-   - Se restaura estado del carrito
-
-### Cómo funciona la búsqueda de admin
-
-1. **Usuario escribe en input**
-   - JavaScript captura eventos `input`
-
-2. **Se filtra array en memoria**
-   - Compara con: nombre, marca, ID
-
-3. **Se renderiza resultado**
-   - DOM se actualiza reactivamente
-
-4. **Sin recarga de página**
-   - Todo ocurre en cliente
-
----
-
-**Documento mantenido**: 12 de marzo de 2026
+*Se explica en detalle en el documento principal `DOCUMENTACION_PROFESIONAL.md`.*
