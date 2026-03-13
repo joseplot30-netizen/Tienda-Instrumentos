@@ -1,5 +1,9 @@
 # Documentación Completa del Proyecto
 
+**Keywords:** Flask, MySQL, Aiven, Render, GitHub, despliegue, carrito, administrador, productos, Jinja2, CSS, JavaScript.
+
+**Keywords de SEO (meta keywords en `templates/layout.html`):** tienda de instrumentos, guitarras, bajos, baterías, accesorios musicales, compra online, carrito de compras, música, instrumentos eléctricos, envío rápido, ofertas musicales.
+
 Esta guía está pensada para desarrolladores y administradores que trabajan con el proyecto **Music Store**. Incluye detalles técnicos, estructura del sistema, rutas, despliegue y recomendaciones, ampliados para cubrir los flujos reales y configuraciones modernas.
 
 ---
