@@ -197,4 +197,3 @@ session['role']        # 'admin' o 'user'
 ### Constantes Globales
 
 _Si se implementan, documentarlas aquí (actualmente no hay constantes globales definidas)_
-
