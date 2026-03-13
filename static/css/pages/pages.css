@@ -199,6 +199,21 @@ main {
     border-color: rgba(255, 255, 255, 0.3);
 }
 
+.formulario .form-footer {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.formulario .form-footer a {
+    color: #ffcc00;
+    text-decoration: none;
+}
+
+.formulario .form-footer a:hover {
+    text-decoration: underline;
+}
+
 .d-grid {
     display: grid;
     gap: 0.5rem;
