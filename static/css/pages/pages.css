@@ -151,7 +151,7 @@ main {
 }
 
 .formulario p {
-    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    font-size: clamp(1.2rem, 3.2vw, 1.8rem);
     font-weight: 800;
     text-align: left;
     color: #ffcc00;
@@ -200,14 +200,14 @@ main {
 }
 
 .formulario .form-footer {
-    font-size: 0.4rem;
+    font-size: 0.75rem;
     opacity: 0.9;
     margin: 0;
 }
 
 @media (max-width: 520px) {
     .formulario .form-footer {
-        font-size: 0.2rem;
+        font-size: 0.68rem;
     }
 }
 
@@ -336,4 +336,3 @@ main {
         font-size: 0.9rem;
     }
 }
-
