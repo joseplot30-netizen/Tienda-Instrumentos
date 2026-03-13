@@ -22,7 +22,9 @@
             <div class="mb-3">
                 <input type="password" name="password" id="password" placeholder="Contraseña" required>
             </div>
-            <div class="d-grid">
+            <div class="mb-3">
+                <input type="password" name="password_confirm" id="password_confirm" placeholder="Confirmar Contraseña" required>
+            </div>
                 <button type="submit" class="entrar-button">Registrar</button>
             </div>
             <p1 class="mt-2">¿Ya tienes cuenta? <a href="{{ url_for('inicio_sesion') }}" id="Iniciar">Inicia sesión</a>
