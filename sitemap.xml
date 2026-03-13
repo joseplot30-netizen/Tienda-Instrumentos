@@ -1,28 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://tienda-instrumentos.onrender.com/</loc>
+    <priority>1.0</priority>
   </url>
+
   <url>
     <loc>https://tienda-instrumentos.onrender.com/instrumentos</loc>
-  </url>
-  <url>
-    <loc>https://tienda-instrumentos.onrender.com/bajos</loc>
-  </url>
-  <url>
-    <loc>https://tienda-instrumentos.onrender.com/baterias</loc>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://tienda-instrumentos.onrender.com/guitarras</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tienda-instrumentos.onrender.com/bajos</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tienda-instrumentos.onrender.com/baterias</loc>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://tienda-instrumentos.onrender.com/otros</loc>
+    <priority>0.7</priority>
   </url>
+
   <url>
     <loc>https://tienda-instrumentos.onrender.com/contacto</loc>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tienda-instrumentos.onrender.com/mas_sobre</loc>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://tienda-instrumentos.onrender.com/carrito</loc>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://tienda-instrumentos.onrender.com/inicio_sesion</loc>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://tienda-instrumentos.onrender.com/crear-cuenta</loc>
+    <priority>0.3</priority>
   </url>
 </urlset>
-<parameter name="filePath">c:\Users\User\Downloads\python_proyecto\proyecto_python\sitemap.xml
