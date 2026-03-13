@@ -1,15 +1,14 @@
-Python
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from functools import wraps
 import mysql.connector
 import os
 
+app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'Tienda-Musica')
 
 def get_db_connection():
     return mysql.connector.connect(
         host=os.getenv('DB_HOST'),
-        # Convertimos a int porque las variables de entorno siempre vienen como texto
         port=int(os.getenv('DB_PORT', 22510)), 
         user=os.getenv('DB_USER'),
         password=os.getenv('DB_PASSWORD'),
