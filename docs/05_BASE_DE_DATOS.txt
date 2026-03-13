@@ -1,11 +1,11 @@
-# BASE DE DATOS - Esquema y Consultas
+# Base de Datos (Esquema y Consultas)
 
 ## 🗄️ Información General
 
-**Sistema**: MySQL  
-**Base de Datos**: `bd_users`  
-**Collation**: UTF8MB4  
-**Charset**: UTF8MB4
+- **Motor**: MySQL
+- **Base de datos**: `bd_users`
+- **Charset**: `utf8mb4`
+- **Collation**: `utf8mb4_unicode_ci`
 
 ---
 
@@ -13,7 +13,7 @@
 
 ### 1. Tabla `users`
 
-**Propósito**: Almacenar datos de usuarios registrados y autenticación
+**Propósito**: Almacenar datos de usuarios registrados y autenticación.
 
 ```sql
 CREATE TABLE users (
@@ -27,34 +27,20 @@ CREATE TABLE users (
 );
 ```
 
-**Campos:**
+**Campos clave**:
 
-| Campo | Tipo | Restricciones | Descripción |
-|-------|------|---------------|-----------|
-| `id` | INT | PK, AUTO_INCREMENT | Identificador único |
-| `username` | VARCHAR(255) | UNIQUE, NOT NULL | Nombre de usuario (login) |
-| `email` | VARCHAR(255) | UNIQUE, NOT NULL | Email registrado |
-| `password` | VARCHAR(255) | NOT NULL | Contraseña (sin hash actualmente) |
-| `is_admin` | BOOLEAN | DEFAULT FALSE | Flag de administrador |
-| `created_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Fecha de creación |
-| `updated_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Fecha última actualización |
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| `id` | INT | Identificador único (PK) |
+| `username` | VARCHAR(255) | Nombre de usuario (único) |
+| `email` | VARCHAR(255) | Correo electrónico (único) |
+| `password` | VARCHAR(255) | Contraseña (texto plano actualmente) |
+| `is_admin` | BOOLEAN | Indicador de administrador |
+| `created_at` | TIMESTAMP | Fecha de creación |
+| `updated_at` | TIMESTAMP | Fecha actualización |
 
-**Índices:**
-```sql
-PRIMARY KEY (id)
-UNIQUE (username) -- Previene duplicados
-UNIQUE (email)    -- Previene duplicados
-```
+**Consultas frecuentes**:
 
-**Ejemplos de Datos:**
-```
-id | username    | email              | password    | is_admin | created_at
-1  | juanperez   | juan@email.com     | pwd123      | 0        | 2026-03-01
-2  | admin01     | admin@store.com    | admin123    | 1        | 2026-03-01
-3  | usuario02   | user@email.com     | pass456     | 0        | 2026-03-05
-```
-
-**Consultas Frecuentes:**
 ```sql
 -- Buscar usuario por username
 SELECT * FROM users WHERE username = 'juanperez';
@@ -80,7 +66,7 @@ DELETE FROM users WHERE id = 5;
 
 ### 2. Tabla `products`
 
-**Propósito**: Almacenar catálogo de instrumentos musicales
+**Propósito**: Almacenar el catálogo de instrumentos.
 
 ```sql
 CREATE TABLE products (
@@ -96,43 +82,30 @@ CREATE TABLE products (
 );
 ```
 
-**Campos:**
+**Campos clave**:
 
-| Campo | Tipo | Restricciones | Descripción |
-|-------|------|---------------|-----------|
-| `id` | INT | PK, AUTO_INCREMENT | Identificador único |
-| `name` | VARCHAR(255) | NOT NULL | Nombre del instrumento |
-| `price` | DECIMAL(10,2) | NOT NULL | Precio en unidades monetarias |
-| `stock` | INT | DEFAULT 0 | Cantidad disponible |
-| `category` | VARCHAR(100) | NOT NULL | Categoría (guitarras, bajos, etc) |
-| `brand` | VARCHAR(100) | Nullable | Marca fabricante |
-| `image_url` | VARCHAR(500) | Nullable | URL imagen del producto |
-| `created_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Fecha de creación |
-| `updated_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Fecha última actualización |
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| `id` | INT | Identificador único (PK) |
+| `name` | VARCHAR(255) | Nombre del producto |
+| `price` | DECIMAL(10,2) | Precio |
+| `stock` | INT | Stock disponible |
+| `category` | VARCHAR(100) | Categoría (guitarras/bajos/baterias/otros) |
+| `brand` | VARCHAR(100) | Marca |
+| `image_url` | VARCHAR(500) | URL de imagen |
+| `created_at` | TIMESTAMP | Fecha de creación |
+| `updated_at` | TIMESTAMP | Fecha actualización |
 
-**Índices:**
+**Índices**:
+
 ```sql
 PRIMARY KEY (id)
-INDEX (category)    -- Búsqueda rápida por categoría
-INDEX (brand)       -- Búsqueda rápida por marca
+INDEX (category)
+INDEX (brand)
 ```
 
-**Categorías Válidas:**
-- `guitarras` - Guitarras eléctricas y acústicas
-- `bajos` - Bajos eléctricos
-- `baterias` - Kits de batería
-- `otros` - Otros instrumentos (vientos, teclados, etc)
+**Consultas frecuentes**:
 
-**Marcas:**
-- `yamaha` - Instrumentos de alta calidad
-- `ibanez` - Guitarras y bajos profesionales
-- `jibao` - Baterías asequibles
-- `aire` - Instrumentos de viento
-- `piano` - Teclados y pianos
-- `clasico` - Instrumentos clásicos
-- `ayson` - Instrumentos económicos
-
-**Consultas Frecuentes:**
 ```sql
 -- Obtener todos los productos
 SELECT * FROM products;
@@ -170,7 +143,7 @@ DELETE FROM products WHERE id = 42;
 
 ### 3. Tabla `contacts`
 
-**Propósito**: Almacenar mensajes de contacto del público
+**Propósito**: Guardar mensajes de contacto enviados por usuarios.
 
 ```sql
 CREATE TABLE contacts (
@@ -182,17 +155,18 @@ CREATE TABLE contacts (
 );
 ```
 
-**Campos:**
+**Campos clave**:
 
-| Campo | Tipo | Restricciones | Descripción |
-|-------|------|---------------|-----------|
-| `id` | INT | PK, AUTO_INCREMENT | Identificador único |
-| `name` | VARCHAR(255) | NOT NULL | Nombre del remitente |
-| `email` | VARCHAR(255) | NOT NULL | Email de contacto |
-| `message` | TEXT | NOT NULL | Contenido del mensaje |
-| `created_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Fecha del mensaje |
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| `id` | INT | Identificador único (PK) |
+| `name` | VARCHAR(255) | Nombre del remitente |
+| `email` | VARCHAR(255) | Email de contacto |
+| `message` | TEXT | Mensaje |
+| `created_at` | TIMESTAMP | Fecha de creación |
 
-**Consultas:**
+**Consultas**:
+
 ```sql
 -- Ver todos los mensajes
 SELECT * FROM contacts ORDER BY created_at DESC;
@@ -208,14 +182,14 @@ VALUES ('Cliente', 'cliente@email.com', 'Consulta sobre productos');
 
 ---
 
-## 🔗 Relaciones y Restricciones
+## 🔗 Relaciones y Mejoras Recomendadas
 
 ### Integridad Referencial
 
-**Actualmente**: No implementada  
-**Recomendación**: Implementar en v2.0
+**Actualmente**: No se implementan claves foráneas.
 
-Estructura sugerida:
+**Recomendación**: En futuras versiones, agregar relaciones entre tablas. Ejemplo:
+
 ```sql
 ALTER TABLE products ADD COLUMN created_by INT;
 ALTER TABLE products ADD FOREIGN KEY (created_by) REFERENCES users(id);
@@ -223,11 +197,12 @@ ALTER TABLE products ADD FOREIGN KEY (created_by) REFERENCES users(id);
 
 ---
 
-## 📈 Estadísticas de Datos
+## 📈 Estadísticas de Datos (Base de Datos)
 
 ### Distribución de Productos
 
-**Conteo por categoría (datos iniciales):**
+**Conteo inicial (ejemplo)**:
+
 ```
 guitarras   : 12 productos
 bajos       : 12 productos
@@ -237,7 +212,8 @@ otros       : 5 productos
 Total       : 34 productos
 ```
 
-**Distribución por marca:**
+**Distribución por marca**:
+
 ```
 yamaha   : 12 productos
 ibanez   : 12 productos
@@ -248,202 +224,3 @@ piano    : 2 productos
 clasico  : 1 producto
 ```
 
----
-
-## 🔧 Operaciones Comunes de Administración
-
-### Respaldo de Base de Datos
-
-```bash
-# Exportar a archivo SQL
-mysqldump -u root bd_users > bd_users_backup.sql
-
-# Restaurar desde archivo
-mysql -u root bd_users < bd_users_backup.sql
-```
-
-### Limpieza de Datos
-
-```sql
--- Eliminar usuarios sin actividad
-DELETE FROM users 
-WHERE created_at < DATE_SUB(NOW(), INTERVAL 1 YEAR) 
-AND is_admin = 0;
-
--- Eliminar productos sin stock
-DELETE FROM products WHERE stock = 0;
-
--- Archivos contactos antiguos
-DELETE FROM contacts WHERE created_at < DATE_SUB(NOW(), INTERVAL 90 DAY);
-```
-
-### Optimización
-
-```sql
--- Analizar tabla
-ANALYZE TABLE users;
-ANALYZE TABLE products;
-
--- Optimizar tablas
-OPTIMIZE TABLE users;
-OPTIMIZE TABLE products;
-
--- Ver tamaño de tablas
-SELECT 
-    table_name,
-    ROUND(((data_length + index_length) / 1024 / 1024), 2) AS size_mb
-FROM information_schema.tables
-WHERE table_schema = 'bd_users';
-```
-
----
-
-## 🔐 Seguridad de Base de Datos
-
-### Mejoras Recomendadas
-
-1. **Credenciales**
-   - Cambiar usuario root por usuario específico
-   - Usar variables de entorno para credenciales
-
-2. **Contraseñas**
-   - Aplicar hashing (bcrypt) en Python
-   - NUNCA guardar texto plano
-
-3. **Permisos**
-   - Limitar permisos de usuario aplicación
-   - Crear usuario con SELECT, INSERT, UPDATE, DELETE solamente
-
-```sql
--- Crear usuario específico
-CREATE USER 'app_user'@'localhost' IDENTIFIED BY 'strong_password';
-
--- Otorgar permisos
-GRANT SELECT, INSERT, UPDATE, DELETE ON bd_users.* TO 'app_user'@'localhost';
-
--- Aplicar cambios
-FLUSH PRIVILEGES;
-```
-
-4. **Auditoría**
-   - Registrar cambios administrativos
-   - Crear tabla de logs
-
----
-
-## 🎯 Queries de Análisis
-
-### Usuarios Más Activos
-```sql
-SELECT u.id, u.username, COUNT(*) as acciones
-FROM users u
-GROUP BY u.id
-ORDER BY acciones DESC
-LIMIT 10;
-```
-
-### Productos Más Vendidos
-```sql
--- Nota: Requiere tabla orders (futuro)
-SELECT p.name, COUNT(o.id) as ventas
-FROM products p
-JOIN orders o ON p.id = o.product_id
-GROUP BY p.id
-ORDER BY ventas DESC
-LIMIT 5;
-```
-
-### Valor Total de Inventario
-```sql
-SELECT 
-    SUM(price * stock) as valor_total,
-    COUNT(*) as cantidad_items,
-    AVG(price) as precio_promedio
-FROM products;
-```
-
-### Productos Bajo Stock
-```sql
-SELECT id, name, stock, category
-FROM products
-WHERE stock < 5
-ORDER BY stock ASC;
-```
-
----
-
-## 📅 Mantenimiento
-
-### Limpieza Periódica (Semanal)
-
-```sql
--- Eliminar mensajes de contacto de más de 6 meses
-DELETE FROM contacts 
-WHERE created_at < DATE_SUB(NOW(), INTERVAL 6 MONTH);
-
--- Analizar tablas para optimizar queries
-ANALYZE TABLE users;
-ANALYZE TABLE products;
-```
-
-### Revisión Mensual
-
-1. Verificar integridad referencial
-2. Revisar espacio disponible en disco
-3. Revisar queries lentas en logs
-4. Backup completo
-
----
-
-## 🚀 Mejoras Futuras
-
-### v2.0 - Pedidos
-```sql
-CREATE TABLE orders (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    total DECIMAL(10,2) NOT NULL,
-    status ENUM('pending', 'paid', 'shipped', 'delivered') DEFAULT 'pending',
-    created_at TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
-CREATE TABLE order_items (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    order_id INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity INT NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES orders(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
-);
-```
-
-### v2.0 - Reseñas
-```sql
-CREATE TABLE reviews (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    product_id INT NOT NULL,
-    user_id INT NOT NULL,
-    rating INT CHECK (rating >= 1 AND rating <= 5),
-    comment TEXT,
-    created_at TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES products(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-```
-
----
-
-## 📞 Soporte
-
-Para consultas sobre la base de datos:
-1. Verificar logs MySQL
-2. Revisar este documento
-3. Contactar administrador de sistemas
-
----
-
-**Documento mantenido**: 12 de marzo de 2026  
-**Versión BD**: 1.0  
-**Charset**: UTF8MB4
