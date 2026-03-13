@@ -1,4 +1,4 @@
-/* pages.css - Estilos consolidados para páginas: contacto, mas_sobre, inicio_sesion */
+
 
 :root {
     --transition: 0.3s ease;
@@ -150,7 +150,7 @@ main {
     }
 }
 
-.formulario p {
+.formulario .form-title {
     font-size: clamp(1.2rem, 3.2vw, 1.8rem);
     font-weight: 800;
     text-align: left;
@@ -200,9 +200,10 @@ main {
 }
 
 .formulario .form-footer {
+    display: block;
+    margin: 0.75rem 0 0;
     font-size: 0.65rem;
     opacity: 0.9;
-    margin: 0;
     line-height: 1.2;
 }
 
