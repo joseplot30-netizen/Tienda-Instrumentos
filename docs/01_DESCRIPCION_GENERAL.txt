@@ -1,22 +1,20 @@
-# Music Store - Sistema de Venta de Instrumentos Musicales
+# Descripción General
 
-## 📋 Descripción General
+**Music Store** es una aplicación web de comercio electrónico especializada en la venta de instrumentos musicales. Permite a usuarios navegar, buscar, comprar productos y provee un panel de administración para gestionar inventario, usuarios y contenido.
 
-**Music Store** es una aplicación web de comercio electrónico especializada en la venta de instrumentos musicales. Permite a usuarios navegación, búsqueda, compra de productos y proporciona un panel de administración completo para gestionar inventario, usuarios y contenido.
+## Características Principales
 
-### Características Principales
-
-- **Catálogo de Productos**: Guitarras, bajos, baterías e instrumentos varios
-- **Carrito de Compras**: Gestión en cliente con persistencia en localStorage
-- **Sistema de Usuarios**: Registro, autenticación y roles (usuario/administrador)
-- **Panel Administrativo**: Gestión de productos, usuarios y configuración del sitio
-- **Búsqueda Avanzada**: Filtrado por categoría, marca, precio e ID
-- **Interfaz Responsiva**: Optimizada para dispositivos móviles y desktop
-- **Filtros de Productos**: Búsqueda por marca y rango de precio
+- **Catálogo de Productos**: Guitarras, bajos, baterías e instrumentos varios.
+- **Carrito de Compras**: Gestión en cliente con persistencia en localStorage.
+- **Sistema de Usuarios**: Registro, autenticación y roles (usuario/administrador).
+- **Panel Administrativo**: Gestión de productos, usuarios y configuración del sitio.
+- **Búsqueda Avanzada**: Filtrado por categoría, marca, precio e ID.
+- **Interfaz Responsiva**: Optimizada para dispositivos móviles y desktop.
+- **Filtros de Productos**: Búsqueda por marca y rango de precio.
 
 ---
 
-## 🗺️ Arquitectura
+## Arquitectura
 
 ### Tech Stack
 
@@ -41,9 +39,9 @@
                        │
 ┌──────────────────────▼───────────────┐
 │   API REST (Flask Routes)            │
-│  - Endpoints públicos                 │
-│  - Endpoints protegidos (admin)       │
-│  - Gestión de sesiones                │
+│  - Endpoints públicos                │
+│  - Endpoints protegidos (admin)      │
+│  - Gestión de sesiones               │
 └──────────────────────┬───────────────┘
                        │
 ┌──────────────────────▼───────────────┐
@@ -56,7 +54,7 @@
 
 ---
 
-## 📍 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 proyecto_python/
@@ -123,7 +121,7 @@ proyecto_python/
 
 ---
 
-## 🚀 Instalación y Configuración
+## Instalación y Configuración
 
 ### Requisitos
 
@@ -133,12 +131,14 @@ proyecto_python/
 
 ### Pasos de Instalación
 
-1. **Clonar o descargar el proyecto**
+1. Clonar o descargar el proyecto:
+
 ```bash
 cd proyecto_python
 ```
 
-2. **Crear ambiente virtual** (opcional pero recomendado)
+2. Crear un ambiente virtual (recomendado):
+
 ```bash
 python -m venv venv
 # En Windows:
@@ -147,38 +147,35 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-3. **Instalar dependencias**
+3. Instalar dependencias:
+
 ```bash
-pip install flask mysql-connector-python
+pip install -r requirements.txt
 ```
 
-4. **Configurar base de datos**
-   - Crear base de datos en MySQL: `bd_users`
-   - Ejecutar script de inicialización:
+4. Configurar la base de datos:
+   - Crear la base de datos en MySQL: `bd_users`
+   - Editar `app.py` para ajustar credenciales de conexión.
+
+5. Inicializar datos (opcional):
+
 ```bash
 python insertar_productos.py
 ```
 
-5. **Configurar credenciales**
-   - Editar `app.py` línea 9-13:
-```python
-db_config = {
-    'host': 'localhost',
-    'user': 'root',          # Cambiar por tu usuario MySQL
-    'password': '',          # Cambiar por tu contraseña
-    'database': 'bd_users'
-}
-```
+6. Ejecutar la aplicación:
 
-6. **Iniciar la aplicación**
 ```bash
 python app.py
 ```
-   - La aplicación estará disponible en: `http://localhost:3000`
+
+7. Acceder a la aplicación:
+
+- `http://localhost:3000`
 
 ---
 
-## 📖 Notas Técnicas
+## Notas Técnicas
 
 ### Configuración Actual
 
@@ -199,22 +196,5 @@ session['role']        # 'admin' o 'user'
 
 ### Constantes Globales
 
-```python
-db_config              # Configuración de conexión MySQL
-app.secret_key        # Clave secreta para sesiones
-```
+_Si se implementan, documentarlas aquí (actualmente no hay constantes globales definidas)_
 
----
-
-## 📚 Referencias
-
-- [Flask Documentation](https://flask.palletsprojects.com/)
-- [MySQL Connector Python](https://dev.mysql.com/doc/connector-python/en/)
-- [Jinja2 Template Engine](https://jinja.palletsprojects.com/)
-- [Bootstrap Icons](https://icons.getbootstrap.com/)
-
----
-
-**Última actualización**: 12 de marzo de 2026  
-**Versión**: 1.0.0  
-**Estado**: En Desarrollo
