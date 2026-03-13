@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, Response
 from functools import wraps
 import mysql.connector
 import os
@@ -152,6 +152,37 @@ def mas_sobre(): return render_template('pages/MAS_SOBRE.html')
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
+@app.route('/sitemap.xml', methods=['GET'])
+def sitemap():
+    """Genera un sitemap XML básico con las rutas públicas de la aplicación."""
+    base_url = request.url_root.rstrip('/')
+    urls = [
+        '/',
+        '/inicio_sesion',
+        '/crear-cuenta',
+        '/instrumentos',
+        '/bajos',
+        '/baterias',
+        '/guitarras',
+        '/otros',
+        '/carrito',
+        '/contacto',
+        '/mas_sobre',
+        '/logout',
+    ]
+
+    xml_parts = ['<?xml version="1.0" encoding="UTF-8"?>',
+                 '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+
+    for path in urls:
+        xml_parts.append('  <url>')
+        xml_parts.append(f'    <loc>{base_url}{path}</loc>')
+        xml_parts.append('  </url>')
+
+    xml_parts.append('</urlset>')
+
+    return Response("\n".join(xml_parts), mimetype='application/xml')
 
 # --- API Rutas para Productos ---
 @app.route('/api/productos/<categoria>')
