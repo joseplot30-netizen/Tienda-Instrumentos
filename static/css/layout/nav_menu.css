@@ -137,6 +137,16 @@ body:not(.show-old-menu) {
     color: #fff;
 }
 
+.site-nav__item a.active {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.site-nav__item a.active:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
 /* Cart link y badge */
 .cart-link {
     display: inline-flex;
