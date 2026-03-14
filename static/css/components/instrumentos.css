@@ -78,6 +78,29 @@ main {
     overflow: hidden;
 }
 
+/* Product card layout (uniform across categories) */
+.producto {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.producto:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.producto-precio {
+    font-weight: 700;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    color: #ffcc00;
+    margin: 0;
+}
+
 .producto-imagen {
     max-width: 100%;
     border-radius: var(--border-radius);
@@ -103,8 +126,10 @@ main {
     top: 29px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 0.3rem;
     padding-bottom: 14%;
+    flex: 1 1 auto;
 }
 
 .producto-titulo {
