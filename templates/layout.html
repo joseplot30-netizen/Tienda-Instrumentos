@@ -57,14 +57,14 @@
             <button class="site-nav__hamburger" aria-label="Abrir menú">☰</button>
             <div class="site-nav__panel">
                 <ul class="site-nav__list">
-                    <li class="site-nav__item"><a href="{{ url_for('index') }}" class="{% if request.path == url_for('index') %}active{% endif %}">Inicio</a></li>
-                    <li class="site-nav__item"><a href="{{ url_for('instrumentos') }}" class="{% if request.path == url_for('instrumentos') %}active{% endif %}">Instrumentos</a></li>
-                    <li class="site-nav__item"><a href="{{ url_for('contacto') }}" class="{% if request.path == url_for('contacto') %}active{% endif %}">Contacto</a></li>
-                    <li class="site-nav__item"><a href="{{ url_for('mas_sobre') }}" class="{% if request.path == url_for('mas_sobre') %}active{% endif %}">Nosotros</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('index') }}">Inicio</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('instrumentos') }}">Instrumentos</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('contacto') }}">Contacto</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('mas_sobre') }}">Nosotros</a></li>
 
                     {% if not session.username %}
-                    <li class="site-nav__item"><a href="{{ url_for('crear_cuenta') }}" class="{% if request.path == url_for('crear_cuenta') %}active{% endif %}">Crear cuenta</a></li>
-                    <li class="site-nav__item"><a href="{{ url_for('inicio_sesion') }}" class="{% if request.path == url_for('inicio_sesion') %}active{% endif %}">Iniciar sesión</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('crear_cuenta') }}">Crear cuenta</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('inicio_sesion') }}">Iniciar sesión</a></li>
                     {% endif %}
 
                     {% if session.username %}
@@ -95,14 +95,14 @@
             <div class="site-nav__drawer">
                 <button class="site-nav__close" aria-label="Cerrar menú">×</button>
                 <ul class="site-nav__list">
-                    <li class="site-nav__item"><a href="{{ url_for('index') }}" class="{% if request.path == url_for('index') %}active{% endif %}">Inicio</a></li>
-                    <li class="site-nav__item"><a href="{{ url_for('instrumentos') }}" class="{% if request.path == url_for('instrumentos') %}active{% endif %}">Instrumentos</a></li>
-                    <li class="site-nav__item"><a href="{{ url_for('contacto') }}" class="{% if request.path == url_for('contacto') %}active{% endif %}">Contacto</a></li>
-                    <li class="site-nav__item"><a href="{{ url_for('mas_sobre') }}" class="{% if request.path == url_for('mas_sobre') %}active{% endif %}">Nosotros</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('index') }}">Inicio</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('instrumentos') }}">Instrumentos</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('contacto') }}">Contacto</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('mas_sobre') }}">Nosotros</a></li>
 
                     {% if not session.username %}
-                    <li class="site-nav__item"><a href="{{ url_for('crear_cuenta') }}" class="{% if request.path == url_for('crear_cuenta') %}active{% endif %}">Crear cuenta</a></li>
-                    <li class="site-nav__item"><a href="{{ url_for('inicio_sesion') }}" class="{% if request.path == url_for('inicio_sesion') %}active{% endif %}">Iniciar sesión</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('crear_cuenta') }}">Crear cuenta</a></li>
+                    <li class="site-nav__item"><a href="{{ url_for('inicio_sesion') }}">Iniciar sesión</a></li>
                     {% endif %}
 
                     {% if session.username %}
@@ -131,103 +131,6 @@
         </div>
     </nav>
     {% endblock %}
-
-    <!-- Mensaje de bienvenida (no mostrar en la página de inicio) -->
-    {% if session.username and request.endpoint != 'index' %}
-    <div class="welcome-message" style="margin: 1rem auto; max-width: 1200px;">
-        ¡Bienvenido/a <strong>{{ session.username }}</strong>! {% if session.role == 'admin' %}<span
-            style="color: #000000;">(Administrador)</span>{% endif %}
-    </div>
-    {% endif %}
-
-    <div class="container">
-        {% block content %}{% endblock %}
-    </div>
-
-    <div id="anuncio-carrito" class="anuncio oculto">
-        <div class="anuncio-contenido">
-            <p>Agregado al carrito</p>
-            <div class="anuncio-botones">
-                <button id="ir-carrito">Ir al carrito</button>
-                <button id="seguir-comprando">Seguir comprando</button>
-            </div>
-        </div>
-    </div>
-
-    <footer class="site-footer">
-        <p>Esta web es una prueba universitaria. Las imágenes, nombres y URLs son simulados y extraídos de internet; aquí no se compra ni se encuentran datos reales. Si buscas los productos, encontrarás sus páginas oficiales. Esto ayuda a evitar reclamaciones legales por plagio.</p>
-    </footer>
-
-    <script src="{{ url_for('static', filename='js/fix_scroll.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/sincronizar_carrito.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/ui.js') }}" defer></script>
-
-    <div id="flask-messages" style="display: none;">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% for category, message in messages %}
-        <span class="msg" data-category="{{ category }}" data-text="{{ message }}"></span>
-        {% endfor %}
-        {% endwith %}
-    </div>
-
-    {% block scripts %}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // 1. Buscamos los mensajes ocultos en el HTML
-            const messageElements = document.querySelectorAll('#flask-messages .msg');
-
-            messageElements.forEach(el => {
-                const categoria = el.getAttribute('data-category');
-                const mensaje = el.getAttribute('data-text');
-
-                // Mapeo de categorías a iconos
-                const iconMap = {
-                    'success': 'success',
-                    'danger': 'error',
-                    'warning': 'warning',
-                    'info': 'info'
-                };
-
-                const icon = iconMap[categoria] || 'info';
-                const titles = {
-                    'success': '¡Éxito!',
-                    'danger': 'Error',
-                    'warning': 'Advertencia',
-                    'info': 'Información'
-                };
-
-                // Si es éxito, lanzamos confeti
-                if (categoria === 'success') {
-                    confetti({
-                        particleCount: 150,
-                        spread: 70,
-                        origin: { y: 0.6 },
-                        colors: ['#000000', '#ffcc00', '#ffffff']
-                    });
-                }
-
-                // Lanzamos SweetAlert2
-                Swal.fire({
-                    title: titles[categoria] || 'Información',
-                    text: mensaje,
-                    icon: icon,
-                    confirmButtonColor: '#1a08dcae',
-                    confirmButtonText: 'Entendido',
-                    backdrop: 'rgba(0, 0, 0, 0.9)',
-                    background: 'rgba(0, 0, 0, 0.8)',
-                    color: '#ffffff'
-                });
-            });
-        });
-    </script>
-    {% endblock %}
-
-</body>
-
-</html>
 
     <!-- Mensaje de bienvenida (no mostrar en la página de inicio) -->
     {% if session.username and request.endpoint != 'index' %}
