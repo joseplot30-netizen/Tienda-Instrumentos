@@ -1,7 +1,15 @@
+import sentry_sdk
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response
 from functools import wraps
 import mysql.connector
 import os
+
+sentry_sdk.init(
+    dsn="https://864c5f4eb2dffc66fd0e90f04f987352@o4511062458564608.ingest.us.sentry.io/4511062484123648",
+    # Add data like request headers and IP for users,
+    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+    send_default_pii=True,
+)
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'Tienda-Musica')
