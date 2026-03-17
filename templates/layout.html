@@ -25,6 +25,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/pages.css') }}?v=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base/mobile.css') }}?v=1">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3705NL0QPH"></script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZVPF2LT');</script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
@@ -36,10 +41,10 @@
 </head>
 
 <body {% block body_attrs %}{% endblock %} class="{% block body_class %}{% endblock %}">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZVPF2LT" height="0" width="0"
-            style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZVPF2LT"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
     {% block nav %}
     <nav class="site-nav" role="navigation" aria-label="Menú principal">
         <div class="site-nav__container">
