@@ -6,18 +6,13 @@ import mysql.connector
 import os
 import json
 
-# --- CONFIGURACIÓN DE SENTRY (CORREGIDA) ---
+# --- CONFIGURACIÓN DE SENTRY ---
 sentry_sdk.init(
     dsn="https://864c5f4eb2dffc66fd0e90f04f987352@o4511062458564608.ingest.us.sentry.io/4511062484123648",
     integrations=[FlaskIntegration()],
-    # Captura datos del usuario (IP, headers)
     send_default_pii=True,
-    # Monitoreo de rendimiento (100% de las transacciones)
     traces_sample_rate=1.0,
-    # Profiling (100% de las sesiones de perfilado)
     profiles_sample_rate=1.0,
-    # Nota: Se eliminaron 'enable_logs', 'profile_session_sample_rate' 
-    # y 'profile_lifecycle' por no ser compatibles o válidos en esta versión.
 )
 
 app = Flask(__name__)
