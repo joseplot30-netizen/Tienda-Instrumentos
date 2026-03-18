@@ -1011,3 +1011,8 @@ def admin_nosotros():
         return redirect(url_for('mas_sobre'))
 
     return render_template('admin/admin_nosotros.html')
+if __name__ == "__main__":
+    # Render define la variable PORT, si no existe usamos 5000 localmente
+    port = int(os.environ.get("PORT", 5000))
+    # '0.0.0.0' es vital para que Render pueda redirigir el tráfico
+    app.run(host="0.0.0.0", port=port)
